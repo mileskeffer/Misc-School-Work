@@ -1,0 +1,19 @@
+{
+  "description": "Sample vehicle data showing how car price relates to horsepower.",
+  "x_label": "Vehicle Price (USD)",
+  "y_label": "Horsepower",
+  "data": [
+    { "price": 18000, "horsepower": 160 },
+    { "price": 22000, "horsepower": 185 },
+    { "price": 25000, "horsepower": 210 },
+    { "price": 28000, "horsepower": 240 },
+    { "price": 32000, "horsepower": 250 },
+    { "price": 36000, "horsepower": 275 },
+    { "price": 40000, "horsepower": 290 },
+    { "price": 45000, "horsepower": 320 },
+    { "price": 52000, "horsepower": 350 },
+    { "price": 60000, "horsepower": 412 },
+    { "price": 72000, "horsepower": 485 },
+    { "price": 85000, "horsepower": 670 }
+  ]
+}

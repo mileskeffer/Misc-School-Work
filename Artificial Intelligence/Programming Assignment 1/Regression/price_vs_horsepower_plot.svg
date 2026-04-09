@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 900 600">
+  <rect width="100%" height="100%" fill="#f8fafc" />
+  <text x="450" y="30" text-anchor="middle" font-size="24" font-weight="700" fill="#0f172a">
+    Vehicle Price vs Horsepower Linear Regression
+  </text>
+  <text x="450" y="56" text-anchor="middle" font-size="15" fill="#334155">
+    horsepower = 0.006811 * price + 28.266696 | R^2 = 0.9660
+  </text>
+
+  <line x1="90.00" y1="50" x2="90.00" y2="510" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 6" />
+<line x1="244.00" y1="50" x2="244.00" y2="510" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 6" />
+<line x1="398.00" y1="50" x2="398.00" y2="510" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 6" />
+<line x1="552.00" y1="50" x2="552.00" y2="510" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 6" />
+<line x1="706.00" y1="50" x2="706.00" y2="510" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 6" />
+<line x1="860.00" y1="50" x2="860.00" y2="510" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 6" />
+  <line x1="90" y1="510.00" x2="860" y2="510.00" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 6" />
+<line x1="90" y1="418.00" x2="860" y2="418.00" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 6" />
+<line x1="90" y1="326.00" x2="860" y2="326.00" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 6" />
+<line x1="90" y1="234.00" x2="860" y2="234.00" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 6" />
+<line x1="90" y1="142.00" x2="860" y2="142.00" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 6" />
+<line x1="90" y1="50.00" x2="860" y2="50.00" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 6" />
+
+  <line x1="90" y1="510" x2="860" y2="510" stroke="#0f172a" stroke-width="2" />
+  <line x1="90" y1="50" x2="90" y2="510" stroke="#0f172a" stroke-width="2" />
+
+  <line
+    x1="143.10"
+    y1="472.13"
+    x2="806.90"
+    y2="140.18"
+    stroke="#dc2626"
+    stroke-width="3"
+  />
+
+  <circle cx="143.10" cy="465.48" r="5" fill="#2563eb" fill-opacity="0.85" stroke="#0f172a" stroke-width="1.5" />
+<circle cx="182.73" cy="447.30" r="5" fill="#2563eb" fill-opacity="0.85" stroke="#0f172a" stroke-width="1.5" />
+<circle cx="212.45" cy="429.11" r="5" fill="#2563eb" fill-opacity="0.85" stroke="#0f172a" stroke-width="1.5" />
+<circle cx="242.18" cy="407.29" r="5" fill="#2563eb" fill-opacity="0.85" stroke="#0f172a" stroke-width="1.5" />
+<circle cx="281.81" cy="400.02" r="5" fill="#2563eb" fill-opacity="0.85" stroke="#0f172a" stroke-width="1.5" />
+<circle cx="321.44" cy="381.83" r="5" fill="#2563eb" fill-opacity="0.85" stroke="#0f172a" stroke-width="1.5" />
+<circle cx="361.07" cy="370.92" r="5" fill="#2563eb" fill-opacity="0.85" stroke="#0f172a" stroke-width="1.5" />
+<circle cx="410.60" cy="349.10" r="5" fill="#2563eb" fill-opacity="0.85" stroke="#0f172a" stroke-width="1.5" />
+<circle cx="479.95" cy="327.28" r="5" fill="#2563eb" fill-opacity="0.85" stroke="#0f172a" stroke-width="1.5" />
+<circle cx="559.21" cy="282.18" r="5" fill="#2563eb" fill-opacity="0.85" stroke="#0f172a" stroke-width="1.5" />
+<circle cx="678.10" cy="229.08" r="5" fill="#2563eb" fill-opacity="0.85" stroke="#0f172a" stroke-width="1.5" />
+<circle cx="806.90" cy="94.52" r="5" fill="#2563eb" fill-opacity="0.85" stroke="#0f172a" stroke-width="1.5" />
+  <text x="90.00" y="538" text-anchor="middle" font-size="14" fill="#1e293b">$12,640</text>
+<text x="244.00" y="538" text-anchor="middle" font-size="14" fill="#1e293b">$28,184</text>
+<text x="398.00" y="538" text-anchor="middle" font-size="14" fill="#1e293b">$43,728</text>
+<text x="552.00" y="538" text-anchor="middle" font-size="14" fill="#1e293b">$59,272</text>
+<text x="706.00" y="538" text-anchor="middle" font-size="14" fill="#1e293b">$74,816</text>
+<text x="860.00" y="538" text-anchor="middle" font-size="14" fill="#1e293b">$90,360</text>
+  <text x="74" y="515.00" text-anchor="end" font-size="14" fill="#1e293b">99</text>
+<text x="74" y="423.00" text-anchor="end" font-size="14" fill="#1e293b">225</text>
+<text x="74" y="331.00" text-anchor="end" font-size="14" fill="#1e293b">352</text>
+<text x="74" y="239.00" text-anchor="end" font-size="14" fill="#1e293b">478</text>
+<text x="74" y="147.00" text-anchor="end" font-size="14" fill="#1e293b">605</text>
+<text x="74" y="55.00" text-anchor="end" font-size="14" fill="#1e293b">731</text>
+
+  <text x="450" y="578" text-anchor="middle" font-size="18" fill="#0f172a">Vehicle Price (USD)</text>
+  <text x="24" y="300" text-anchor="middle" font-size="18" fill="#0f172a" transform="rotate(-90, 24, 300)">Horsepower</text>
+</svg>
