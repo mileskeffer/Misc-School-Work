@@ -4,7 +4,7 @@
 
 using namespace std;
 
-int firstDifference(const string& line1, const string& line2) {
+int firstDifference(const string& line1, const string& line2) { 
     int shorterLength = static_cast<int>(line1.length());
 
     if (line2.length() < line1.length()) {
@@ -41,15 +41,19 @@ void printDifference(const string& filename1, const string& filename2,
 }
 
 int main(int argc, char** argv) {
+    // argc is the # of command line arguments, argv is the arguments themselves
+    // if the program is ran like: .\main.cpp file1.txt file2.txt, then argv[1] is file1.txt and argv[2] is file2.txt
+    // argc would be 3, because of the 3 arguments (file name, 1st argunement [file1], 2nd argument [file2])
     if (argc != 3) {
         cerr << "Error: enter exactly two file names." << endl;
         return 1;
     }
 
-    ifstream infile1(argv[1]);
-    ifstream infile2(argv[2]);
+    //i fstream is "input file stream", used to read from files
+    ifstream infile1(argv[1]); //opens filename stored in argv[1] (file1.txt) and connects it with infile1
+    ifstream infile2(argv[2]); 
 
-    if (!infile1 || !infile2) {
+    if (!infile1 || !infile2) { //ifstream is an object in fstream, and has functionality to be treated for comparison
         cerr << "Error: could not open one or both files." << endl;
         return 1;
     }
@@ -57,12 +61,13 @@ int main(int argc, char** argv) {
     string line1;
     string line2;
     int lineNumber = 1;
-    bool hasLine1 = static_cast<bool>(getline(infile1, line1));
+    bool hasLine1 = static_cast<bool>(getline(infile1, line1)); //stores whether or not it could read the line (if there is a line to read) 
+                                                                //as true or false. must use static cast because getline isnt a boolean function itself
     bool hasLine2 = static_cast<bool>(getline(infile2, line2));
 
-    while (hasLine1 || hasLine2) {
+    while (hasLine1 || hasLine2) { //while either file has a line left to read
         if (!hasLine1) {
-            line1 = "";
+            line1 = ""; //needs to print blank line 
         }
         if (!hasLine2) {
             line2 = "";
