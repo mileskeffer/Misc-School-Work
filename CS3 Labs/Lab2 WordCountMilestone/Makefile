@@ -1,4 +1,4 @@
-target = wordCountMilestone
+target = wordCountMilestone.exe
 source = main.cpp
 compiler = g++
 flags = -std=c++17
@@ -7,9 +7,9 @@ build:
 	$(compiler) $(flags) $(source) -o $(target)
 
 run: build
-	./$(target) test.txt
+	$(target) test.txt
 
 clean:
-	rm -f $(target)
+	if exist $(target) del /Q $(target)
 
 .PHONY: build run clean

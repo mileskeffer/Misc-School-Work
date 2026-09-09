@@ -5,7 +5,7 @@ sources = wordListMain.cpp wordListDefinitions.cpp
 case = insensitive
 
 # file to output
-target = wordCount
+target = wordCount.exe
 
 compiler = g++
 
@@ -18,24 +18,24 @@ build:
 
 # run both tests saving their results to files
 run: build
-	./$(target) file1.txt > test1Result.txt
+	$(target) file1.txt > test1Result.txt
 
 # "clean" and "test" are not produced by make
 .PHONY: clean test
 
 # delete built file
 clean:
-	rm -f $(target)
+	if exist $(target) del /Q $(target)
 
 sensitive:
-	diff test1Result.txt caseSensitiveSolution.txt
+	fc /N test1Result.txt caseSensitiveSolution.txt
 
 insensitive:
-	diff test1Result.txt caseInsensitiveSolution.txt
+	fc /N test1Result.txt caseInsensitiveSolution.txt
 
 # check if the programs output matches the desired output
 test: run $(case)
-	$(compiler) $(flags) testWordList.cpp wordListDefinitions.cpp -o testClass
+	$(compiler) $(flags) testWordList.cpp wordListDefinitions.cpp -o testClass.exe
 	@echo
-	./testClass
+	testClass.exe
 	@echo tests passed great job

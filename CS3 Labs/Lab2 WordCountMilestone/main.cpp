@@ -7,6 +7,8 @@ using std::cerr;
 using std::cout;
 using std::endl;
 using std::ifstream;
+using std::isalnum;
+using std::string;
 
 int main(int argc, char* argv[]) {
    if (argc != 2) {
@@ -20,24 +22,25 @@ int main(int argc, char* argv[]) {
       return 1;
    }
 
-   int wordCount = 0;
-   bool insideWord = false;
+   string word;
    char ch;
 
    while (input.get(ch)) {
       unsigned char value = static_cast<unsigned char>(ch);
 
-      if (std::isalnum(value)) {
-         if (!insideWord) {
-            ++wordCount;
-            insideWord = true;
-         }
+      if (isalnum(value)) {
+         word += ch;
       } else {
-         insideWord = false;
+         if (!word.empty()) {
+            cout << word << endl;
+            word.clear();
+         }
       }
    }
 
-   cout << wordCount << endl;
+   if (!word.empty()) {
+      cout << word << endl;
+   }
 
    return 0;
 }

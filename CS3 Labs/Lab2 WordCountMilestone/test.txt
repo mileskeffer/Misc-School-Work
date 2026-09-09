@@ -32,6 +32,8 @@ a
 
 
 
- this is 216 words
+ this is 223 words
 
+a.a.a.a
 
+a[a]a

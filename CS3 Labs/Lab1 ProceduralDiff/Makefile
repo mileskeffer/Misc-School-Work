@@ -1,9 +1,8 @@
-#modified make file with the first test and solution
 # file to build
 sources = main.cpp
 
 # file to output
-target = diff.exe
+target = diff
 
 compiler = g++
 
@@ -14,20 +13,18 @@ flags = -std=c++17
 build:
 	$(compiler) $(flags) $(sources) -o $(target)
 
-# run both tests saving their results to files
+# run the test saving its result to a file
 run: build
-	.\$(target) file1.txt file2.txt > test1Result.txt
+	./$(target) file1.txt file2.txt > test1Result.txt
 
-# "clean" and "test" are not produced by make
+# "build", "run", "clean", and "test" are not produced by make
 .PHONY: build run clean test
 
 # delete built file
 clean:
-	if exist $(target) del /Q $(target)
+	rm -f $(target)
 
-# check if the programs output matches the desired output
+# check if the program output matches the desired output
 test: run
-	fc test1Result.txt test1Solution.txt
+	diff -C 3 test1Result.txt test1Solution.txt
 	@echo tests passed great job
-
-
