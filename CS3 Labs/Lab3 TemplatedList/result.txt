@@ -1,0 +1,12 @@
+Integer collection: adding 1 adding 2 adding 3 adding duplicate 2 
+1 2 3 2 
+removing 2 
+1 3 
+adding an array of strings String collection: yellow orange green blue 
+Populating individual character collections
+Adding individual collections 
+Last added character collection: o p q r s t u 
+parameter c: 1.1 2.2 
+c1 after testfunc() call: 1.1 2.2 
+c3 after stackable assingment: 1.1 2.2 
+c3 after self-assignment: 1.1 2.2 
