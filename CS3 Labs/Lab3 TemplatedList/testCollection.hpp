@@ -56,7 +56,7 @@ void Collection<T>::add(const T& item) {
    while (current->getNext() != nullptr)
       current = current->getNext();
 
-   current->setNext(newNode);
+   current->setNext(newNode);  //connects old last node
 }
 
 template <typename T>
