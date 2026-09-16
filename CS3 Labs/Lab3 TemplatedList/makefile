@@ -1,29 +1,28 @@
-# file to build
-sources = testCollection.cpp
+CXX := g++
+CXXFLAGS := -std=c++17 -Wall -Wextra -pedantic
 
-# file to output
-target = testCollection
+TARGET := testCollection.exe
+SOURCE := testCollection.cpp
+HEADERS := testCollection.hpp list.hpp
 
-compiler = g++
+SHELL := cmd.exe
+.SHELLFLAGS := /C
 
-# compiler flags
-flags = -std=c++17
+.PHONY: all build run test clean
 
-# build file
-build:
-	$(compiler) $(flags) $(sources) -o $(target)
+all: build
 
-# run both tests saving their results to files
-run: build
-	./$(target) > result.txt
+build: $(TARGET)
 
-# "clean" and "test" are not produced by make
-.PHONY: clean test
+$(TARGET): $(SOURCE) $(HEADERS)
+	$(CXX) $(CXXFLAGS) $(SOURCE) -o $(TARGET)
 
-# delete built file
+run: $(TARGET)
+	.\$(TARGET)
+
+test: $(TARGET)
+	.\$(TARGET) > result.txt
+
 clean:
-	rm -f $(target)
-
-# check if the programs output matches the desired output
-test: run
-	valgrind ./$(target) > memoryResult.txt
+	@if exist "$(TARGET)" del /Q "$(TARGET)"
+	@if exist "result.txt" del /Q "result.txt"

@@ -4,6 +4,12 @@
 
 #include "testCollection.hpp" // list template
 #include <cassert>
+#include <iostream>
+#include <string>
+
+using std::cout;
+using std::endl;
+using std::string;
 
 template <typename T>
 void testfunc(Collection<T>);  // function to test pass-by-value for collection
@@ -38,9 +44,6 @@ int main(){
    
    assert(equal(cone, emptyCol));
    
-   // uncomment when you debugged the code above
-   /*
-
    // manipulating strings
    string sa[] = {"yellow", "orange", "green", "blue"};
    Collection<string> ctwo;
@@ -82,10 +85,7 @@ int main(){
    // printing characters from last collection added
    cout << "Last added character collection: ";
    cpile.last().print();
-   */
-
-   /*
-    // uncomment when you debugged the code above  
+   // testing the big three
     Collection<double> c1, c2, c3;
     
     c1.add(1.1);
@@ -105,13 +105,10 @@ int main(){
     c3=c3; // testing protection against self-assingment
     cout << "c3 after self-assignment: ";
     c3.print();
-   */
 }
 
-/*
 template <typename T>
 void testfunc(Collection<T> c){ // copy constructor is invoked on "c"
     cout << "parameter c: ";
     c.print();
 } // destructor is invoked when "c" goes out of scope
-*/
