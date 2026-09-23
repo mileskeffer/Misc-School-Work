@@ -1,0 +1,38 @@
+CXX := g++
+CXXFLAGS := -std=c++11 -Wall -Wextra -pedantic
+
+PROCEDURAL := classSchedule
+OBJECT := classScheduleObject
+INPUTS := cs1.txt cs2.txt cs3.txt cs4.txt dropouts.txt
+EXPECTED := classScheduleTestOutput.txt
+
+.PHONY: all build run run-procedural run-object test clean
+
+all: build
+
+build: $(PROCEDURAL) $(OBJECT)
+
+$(PROCEDURAL): classSchedule.cpp
+	$(CXX) $(CXXFLAGS) $< -o $@
+
+$(OBJECT): classScheduleObject.cpp
+	$(CXX) $(CXXFLAGS) $< -o $@
+
+run: run-procedural
+
+run-procedural: $(PROCEDURAL)
+	./$(PROCEDURAL) $(INPUTS)
+
+run-object: $(OBJECT)
+	./$(OBJECT) $(INPUTS)
+
+test: build
+	./$(PROCEDURAL) $(INPUTS) > classScheduleResult.txt
+	./$(OBJECT) $(INPUTS) > classScheduleObjectResult.txt
+	diff -u $(EXPECTED) classScheduleResult.txt
+	diff -u $(EXPECTED) classScheduleObjectResult.txt
+	@echo All tests passed.
+
+clean:
+	rm -f $(PROCEDURAL) $(OBJECT) classScheduleResult.txt \
+		classScheduleObjectResult.txt

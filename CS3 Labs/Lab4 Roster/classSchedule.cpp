@@ -33,6 +33,9 @@ string courseName(const string& fileName);
 vector<StudentEntry>::iterator findStudent(vector<StudentEntry>& students,
                                            const string& name);
 
+// Prints every student entry as a name followed by enrolled courses.
+void printRoster(const vector<StudentEntry>& students);
+
 int main(int argc, char* argv[]) {
    if (argc < 3) {
       cout << "usage: " << argv[0]
@@ -73,6 +76,11 @@ int main(int argc, char* argv[]) {
       }
    }
 
+   cout << "All students\n"
+        << "first name last name: courses enrolled\n";
+   printRoster(studentEntries);
+   cout << "\n\n";
+
    const list<string> dropouts = readRoster(argv[argc - 1]);
 
    // Changed from roster.cpp: each element is now an entire StudentEntry, so
@@ -93,18 +101,9 @@ int main(int argc, char* argv[]) {
          return left.front() < right.front();
       });
 
-   cout << "all students, dropouts removed and sorted\n"
+   cout << "All students, dropouts removed and sorted\n"
         << "first name last name: courses enrolled\n";
-
-   // Changed from roster.cpp: print the first item as the student's name, then
-   // print every remaining item as an enrolled course.
-   for (const StudentEntry& student : studentEntries) {
-      auto item = student.begin();
-      cout << *item << ':';
-      for (++item; item != student.end(); ++item)
-         cout << *item << ' ';
-      cout << '\n';
-   }
+   printRoster(studentEntries);
 }
 
 // Changed from roster.cpp: return the completed list instead of receiving the
@@ -144,4 +143,16 @@ vector<StudentEntry>::iterator findStudent(vector<StudentEntry>& students,
       [&name](const StudentEntry& student) {
          return student.front() == name;
       });
+}
+
+// Changed from roster.cpp: print the first item as the student's name, then
+// print every remaining item as an enrolled course.
+void printRoster(const vector<StudentEntry>& students) {
+   for (const StudentEntry& student : students) {
+      auto item = student.begin();
+      cout << *item << ':';
+      for (++item; item != student.end(); ++item)
+         cout << *item << ' ';
+      cout << '\n';
+   }
 }
