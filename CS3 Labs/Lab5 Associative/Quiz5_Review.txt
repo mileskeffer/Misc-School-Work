@@ -1,0 +1,246 @@
+CS3 CODE REVIEW - PREDICTED QUIZ 5
+Lab 5: Associative Containers
+
+Basis for this prediction
+-------------------------
+The Quiz 1-3 photographs in quizdata follow a repeatable pattern: 10 multiple-choice
+questions, four choices per question, and one best answer. The questions refer to the
+exact implementation and emphasize data representation, control flow,
+execution traces, edge cases, and the purpose or consequence of specific C++ lines.
+Questions 1-10 below are the highest-probability predictions. Questions 11-20 are
+close alternates that cover the remaining implementation details most likely to be
+selected by the same quiz-generation process.
+
+
+QUESTIONS 1-10: HIGHEST-PROBABILITY PREDICTIONS
+================================================
+
+1. What does the declaration below store?
+
+   map<Student, list<string>> schedules;
+
+   A. One course key mapped to a list of students
+   B. One unique student key mapped to that student's course names
+   C. A list of duplicate students sorted by course
+   D. A filename key mapped to one Student object
+
+
+2. How does schedules determine whether two Student keys represent the same key?
+
+   A. It calls Student::print() and compares the returned strings.
+   B. It uses operator<; two keys are equivalent when neither is less than the other.
+   C. It calls an automatically generated operator==.
+   D. It compares the addresses of the two Student objects.
+
+
+3. What happens when the following statement is evaluated for a student who is not
+   already in schedules?
+
+   list<string>& courses = schedules[student];
+
+   A. It throws std::out_of_range.
+   B. It inserts the student with an empty list and returns a reference to that list.
+   C. It returns a reference to the first student's course list.
+   D. It inserts the student with the current course already in the list.
+
+
+4. If the same student's name occurs twice in one course roster, how many times is
+   that course stored for the student?
+
+   A. Zero times
+   B. Once, because std::find prevents a duplicate course entry
+   C. Twice, because std::map allows duplicate keys
+   D. The entire student entry is erased
+
+
+5. When the supplied Makefile command runs, Gerald Edwards occurs in all four course
+   files and is not a dropout. Which course list is printed for him?
+
+   A. cs1 cs2 cs3 cs4
+   B. cs4 cs3 cs2 cs1
+   C. cs1 only
+   D. cs1 cs2 cs3 cs4 dropouts
+
+
+6. What is the effect of this statement for a dropout who was enrolled in several
+   courses?
+
+   schedules.erase(dropout);
+
+   A. It removes only the student's final course.
+   B. It removes the student's entire map entry and all associated courses.
+   C. It leaves the map unchanged because erase requires an iterator.
+   D. It removes every student from the same courses.
+
+
+7. Why does the course-processing loop use i < argc - 1?
+
+   A. The final command-line argument is reserved for the dropout file.
+   B. argv[argc - 1] is always the program name.
+   C. The final course file is processed by printSchedules().
+   D. std::map cannot hold the final argument.
+
+
+8. What determines the order in which printSchedules() visits the students?
+
+   A. The order in which names first appear in the input files
+   B. The Student operator< used by std::map
+   C. The number of courses taken by each student
+   D. The alphabetical order of the course filenames
+
+
+9. What does enrolledStudents provide in the second output section?
+
+   A. Every original roster entry, including duplicates and dropouts
+   B. Each remaining student exactly once, sorted by Student::operator<, without courses
+   C. Students sorted by the number of courses they take
+   D. Only students enrolled in more than one course
+
+
+10. What does courseName("C:\\rosters\\cs2.txt") return?
+
+    A. C:\\rosters\\cs2
+    B. cs2.txt
+    C. cs2
+    D. .txt
+
+
+QUESTIONS 11-20: CLOSE ALTERNATES
+=================================
+
+11. According to Student::operator<, in what order are these students stored?
+
+    Alex Young
+    Alex Adams
+    Beth Adams
+
+    A. Alex Young, Alex Adams, Beth Adams
+    B. Beth Adams, Alex Adams, Alex Young
+    C. Alex Adams, Alex Young, Beth Adams
+    D. Alex Adams, Beth Adams, Alex Young
+
+
+12. What is the minimum valid command line accepted by the argc < 3 check?
+
+    A. The program name only
+    B. The program name and one dropout file
+    C. The program name, one course file, and one dropout file
+    D. The program name and three course files
+
+
+13. Suppose a roster file ends with the single word Taylor and has no following last
+    name. What does readRoster() do with Taylor?
+
+    A. It creates a Student with an empty last name.
+    B. It creates the student Taylor Taylor.
+    C. It throws an exception.
+    D. It does not add the word because extracting both names fails.
+
+
+14. What happens if readRoster() cannot open a requested file?
+
+    A. It returns an empty list and continues normally.
+    B. It asks the user to enter a replacement filename.
+    C. It writes an error to cerr and exits with EXIT_FAILURE.
+    D. It inserts a placeholder Student into the map.
+
+
+15. Why does Student not need an operator== for its use as the key type of the map
+    and set in this program?
+
+    A. Associative containers compare Student objects by their print() output.
+    B. The containers use operator< both for ordering and key equivalence.
+    C. The compiler converts every Student into a string before insertion.
+    D. map and set compare only object addresses.
+
+
+16. What is the purpose of std::move in the Student constructor below?
+
+    Student(string firstName, string lastName)
+       : firstName_(std::move(firstName)), lastName_(std::move(lastName)) {}
+
+    A. It transfers the contents of the by-value parameters into the data members.
+    B. It sorts the first and last names.
+    C. It moves the completed Student directly into schedules.
+    D. It makes the two data members constant.
+
+
+17. Assuming a student has courses cs1 and cs3, which line does printSchedules()
+    produce? Pay attention to spacing.
+
+    A. Amy Smith: cs1 cs3
+    B. Amy Smith:cs1 cs3
+    C. Amy Smith cs1:cs3
+    D. Amy Smith:cs1cs3
+
+
+18. With the supplied cs1.txt through cs4.txt and dropouts.txt files, which student
+    is printed first after dropouts are removed?
+
+    A. Alan Wood
+    B. Andrew Turner
+    C. Anne Clark
+    D. Betty Torres
+
+
+19. With the supplied four course files and dropout file, how many students remain
+    enrolled and are printed in the "Currently Enrolled Students" section?
+
+    A. 35
+    B. 44
+    C. 53
+    D. 9
+
+
+20. A student occurs in cs1.txt, cs3.txt, and dropouts.txt. Where will that student
+    appear in the final output?
+
+    A. Once in each output section with only cs1 listed
+    B. Once in each output section with both cs1 and cs3 listed
+    C. Only in the Currently Enrolled Students section
+    D. In neither final output section
+
+
+ANSWER KEY AND SHORT EXPLANATIONS
+=================================
+
+1.  B - The map key is a unique Student; its mapped value is a list of courses.
+2.  B - std::map uses its ordering relation. Equivalent keys compare false both ways.
+3.  B - map::operator[] inserts a value-initialized mapped value when the key is absent.
+4.  B - The find check adds a course only when it is not already in the list.
+5.  A - Course names are appended in command-line order: cs1, cs2, cs3, then cs4.
+6.  B - Erasing by key removes the one map element, including its complete course list.
+7.  A - argv[argc - 1] is intentionally processed later as the dropout roster.
+8.  B - Iteration over a map follows key order, which Student::operator< defines.
+9.  B - The set contains the remaining map keys once each and prints names only.
+10. C - courseName() removes both the directory portion and the final extension.
+11. C - Students are ordered by first name, with last name breaking a first-name tie.
+12. C - argc must be at least 3: executable, one course roster, and dropout roster.
+13. D - The loop body runs only after both formatted string extractions succeed.
+14. C - The code prints "Unable to open <filename>" to cerr, then calls exit().
+15. B - map and set derive both sorted order and equivalence from operator<.
+16. A - The constructor receives copies by value and moves those parameters into members.
+17. B - The code prints ':' and then the first course with no intervening space.
+18. B - Alan Wood and Anne Clark are dropouts; Andrew Turner is the first remaining key.
+19. A - There are 44 unique roster names and all 9 listed dropouts occur among them.
+20. D - The dropout erase removes the student's entire entry before either final view prints.
+
+
+REVERSE-ENGINEERED QUIZ-GENERATION PROMPT
+=========================================
+
+The exact original prompt cannot be recovered from the photographs, but its likely
+functional form is:
+
+"Review the attached student's C++ lab submission and create a 10-question code-review
+quiz about that exact implementation. Use four multiple-choice options (A-D) per
+question and exactly one best answer. Test concrete program behavior, data members,
+control flow, edge cases, output/tracing, and the purpose or consequence of important
+C++ operations used in the code. Include short code fragments where helpful. Use
+plausible distractors based on common misconceptions, avoid questions unrelated to the
+submitted code, and provide a separate answer key. Refer to the student's implementation
+or name where appropriate."
+
+Confidence note: the format and topic-selection pattern are strongly supported by all
+three photographed quizzes. The exact wording and which 10 details will be sampled are
+necessarily predictions.
