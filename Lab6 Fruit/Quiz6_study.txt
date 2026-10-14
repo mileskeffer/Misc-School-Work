@@ -1,0 +1,232 @@
+CS3 CODE REVIEW - PREDICTED QUIZ 6
+Lab 6: Fruit and STL Algorithms/Containers
+
+Basis for this prediction
+-------------------------
+The photographed Quiz 1-3 examples consistently use 10 multiple-choice questions
+with four choices and one best answer. They focus on the student's exact code:
+container representation, algorithm behavior, execution traces, edge cases, and the
+purpose of individual C++ statements. Questions 1-10 below are the highest-probability
+predictions. Questions 11-20 are close alternates from the remaining quiz-worthy code.
+
+
+QUESTIONS 1-10: HIGHEST-PROBABILITY PREDICTIONS
+================================================
+
+1. In apples.cpp, what values can the generate() lambda assign to an apple?
+
+   A. An integer weight from 3 through 8 and only the color red
+   B. A double weight from 3 through 8 and either "green" or "red"
+   C. A double weight greater than 8 and either "yellow" or "green"
+   D. A negative weight and a randomly generated color string
+
+
+2. Suppose the apple weights are 4, 7, 5, and 6 ounces, and the user enters 5 as
+   toFind. What do count_if() and the find_if() loop report?
+
+   A. Three apples at positions 1, 2, and 3
+   B. Two apples at positions 0 and 2
+   C. Two apples at positions 1 and 3
+   D. One apple at position 1
+
+
+3. Why does the apple-search loop execute ++apple after printing a matching position?
+
+   A. To change the matching apple's weight
+   B. To make the next find_if() start after the current match
+   C. To convert the iterator into an integer position
+   D. To sort the matched apples
+
+
+4. What does max_element() select with this comparator?
+
+   [](const Apples& left, const Apples& right) {
+      return left.weight < right.weight;
+   }
+
+   A. The first red apple
+   B. The apple having the greatest weight
+   C. The apple having the smallest weight
+   D. The final apple regardless of weight
+
+
+5. Which apples are removed by the erase-remove expression in apples.cpp?
+
+   A. Apples whose grown weight is less than or equal to minAccept
+   B. Apples whose grown weight is strictly less than minAccept
+   C. Apples whose original weight was greater than minAccept
+   D. Only green apples below minAccept
+
+
+6. Why does oranges.cpp use multimap<Variety, string> instead of map<Variety, string>?
+
+   A. A multimap can store many fruits with the same Variety key.
+   B. A multimap automatically removes repeated fruit varieties.
+   C. A multimap allows only one color for each variety.
+   D. A multimap stores its keys in random order.
+
+
+7. What range is described by these two iterators in oranges.cpp?
+
+   const auto firstOrange = tree.lower_bound(Variety::orange);
+   const auto afterLastOrange = tree.upper_bound(Variety::orange);
+
+   A. Every fruit from the first orange through the end of the tree
+   B. Only the first orange in the tree
+   C. The half-open range containing every entry whose key is Variety::orange
+   D. Every pear and apple, but no oranges
+
+
+8. Suppose the lemon qualities are 4.2, 8.5, and 6.0. In what order does lemons.cpp
+   print them?
+
+   A. 8.5, 6.0, 4.2
+   B. 4.2, 6.0, 8.5
+   C. 6.0, 8.5, 4.2
+   D. Their original insertion order
+
+
+9. Suppose the peach basket contains, in order, ripe A, green B, ripe C, and ripe D.
+   What order does remove_copy_if() place the peaches into peck?
+
+   A. A, B, C, D
+   B. A, C, D
+   C. B only
+   D. D, C, A
+
+
+10. After the two remove operations in peaches.cpp, which peaches remain in basket?
+
+    A. Only the ripe peaches
+    B. Only the unripe/green peaches, in their original relative order
+    C. Every original peach because remove_if() cannot modify a vector
+    D. No peaches
+
+
+QUESTIONS 11-20: CLOSE ALTERNATES
+=================================
+
+11. At what point are the weights included in the apple sum calculated by accumulate()?
+
+    A. After the apples grow and after light apples are removed
+    B. Before the transform() growth operation and before removal
+    C. After the remaining apples are sorted
+    D. Only after the user enters minAccept
+
+
+12. What does the transform() call in apples.cpp do?
+
+    A. It adds toGrow to every apple's weight and writes the changed apples back into crate.
+    B. It adds toGrow only to apples heavier than toFind.
+    C. It copies the apples into a second vector without changing their weights.
+    D. It changes every apple's color instead of its weight.
+
+
+13. Why is crate.erase() needed after remove_if()?
+
+    A. remove_if() destroys the vector and erase() constructs a replacement.
+    B. remove_if() moves retained elements forward but does not reduce the vector's size.
+    C. remove_if() removes only the first unacceptable apple.
+    D. erase() sorts the retained apples.
+
+
+14. In what order does the final sort() arrange the remaining apples?
+
+    A. Red before green
+    B. Greatest weight to smallest weight
+    C. Smallest weight to greatest weight
+    D. Original generation order
+
+
+15. What is the possible range of treeSize in oranges.cpp?
+
+    A. 0 through 99
+    B. 1 through 100
+    C. 1 through 99
+    D. Exactly 100
+
+
+16. Because no explicit enum values are supplied, what is the key order used by the
+    orange multimap?
+
+    A. orange, pear, apple
+    B. apple, orange, pear
+    C. pear, apple, orange
+    D. The order is random
+
+
+17. What can be concluded about box immediately after lemons.cpp finishes filling it?
+
+    A. It contains between 1 and 30 lemons, so it is not empty.
+    B. It contains between 0 and 29 lemons and may be empty.
+    C. It always contains exactly 30 lemons.
+    D. It contains only the single highest-quality lemon.
+
+
+18. Which zero-based positions from peck are printed by the "every 3'd peach" loop?
+
+    A. 0, 3, 6, ...
+    B. 1, 4, 7, ...
+    C. 2, 5, 8, ...
+    D. 3, 6, 9, ...
+
+
+19. What condition does shouldJam(current) test?
+
+    A. Whether current is ripe
+    B. Whether current.weight is less than 10.0
+    C. Whether current.weight is greater than or equal to 10.0
+    D. Whether current is every third peach
+
+
+20. What happens to the generated ripe peaches when the jam calculation and final
+    erase-remove operation execute?
+
+    A. Their weights are summed into jamWeight, and all of them are erased from peck.
+    B. Only ripe peaches weighing exactly 10 ounces are erased.
+    C. Their weights are summed, but all of them remain in peck.
+    D. None are selected because shouldJam tests ripeness instead of weight.
+
+
+ANSWER KEY AND SHORT EXPLANATIONS
+=================================
+
+1.  B - The formula produces weights in the 3-to-8 range; parity selects green or red.
+2.  C - The predicate is weight > 5, so only 7 and 6 match at zero-based positions 1 and 3.
+3.  B - Advancing prevents find_if() from finding the same matching element repeatedly.
+4.  B - The comparator establishes ascending weight order, so max_element finds the greatest.
+5.  B - Growth occurs first, and the removal predicate uses apple.weight < minAccept.
+6.  A - Unlike map, multimap permits multiple elements with equivalent keys.
+7.  C - lower_bound/upper_bound delimit [first orange, first key after all oranges).
+8.  A - priority_queue is a max-priority queue here; operator< makes the best quality top().
+9.  D - The predicate skips green B, while front_inserter reverses the copied ripe peaches.
+10. B - Ripe peaches are erased from basket; remove_if preserves the order of retained greens.
+11. B - accumulate() occurs before the program asks how much the apples should grow.
+12. A - The lambda changes a copied Apple and returns it to the corresponding output position.
+13. B - remove_if() returns the new logical end; erase() removes the leftover physical tail.
+14. C - The sorting comparator is left.weight < right.weight.
+15. B - rand() % 100 produces 0-99, and adding 1 produces 1-100.
+16. A - The implicit enum values are orange=0, pear=1, and apple=2.
+17. A - rand() % 30 + 1 produces a nonzero box size from 1 through 30.
+18. C - The loop advances two positions before printing, then one more before repeating.
+19. B - bind() fixes lighterThan's maxWeight argument at weightToJam, which is 10.0.
+20. A - Generated weights are between 3 and 8, so every ripe peach in peck is under 10.
+
+
+LIKELY QUIZ-GENERATION PROMPT
+=============================
+
+The exact prompt cannot be recovered, but the photographed quizzes support this likely
+functional form:
+
+"Review the attached student's C++ lab submission and create a 10-question code-review
+quiz about that exact implementation. Give four choices (A-D) and exactly one best
+answer per question. Test concrete behavior, container and algorithm semantics,
+execution traces, edge cases, and the purpose or consequence of important statements.
+Include short code fragments or small hypothetical inputs when useful. Use plausible
+distractors based on common misconceptions, and provide a separate answer key."
+
+Why the first 10 rank highest: they cover the most distinctive operation in each fruit
+program and closely match repeated question types from the earlier quizzes--predicate
+tracing, iterator advancement, comparator behavior, associative-container ranges,
+priority ordering, and the exact result of copy/remove algorithms.
