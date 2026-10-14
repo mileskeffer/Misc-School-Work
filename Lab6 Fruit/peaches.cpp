@@ -15,9 +15,7 @@
 #include <deque>
 #include <string>
 
-using std::cin; using std::cout; using std::endl;
-using std::string;
-using std::vector; using std::deque;
+using namespace std;
 
 struct Peaches{
    double weight; // oz
@@ -42,7 +40,7 @@ int main(){
    vector <Peaches> basket(size);
 
    // assign random weight and ripeness to peaches in the basket
-   std::generate(basket.begin(), basket.end(), [=]() {
+   generate(basket.begin(), basket.end(), [=]() {
       return Peaches{minWeight + static_cast<double>(rand()) / RAND_MAX *
                      (maxWeight - minWeight),
                      static_cast<bool>(rand() % 2)};
@@ -50,27 +48,27 @@ int main(){
 
    
    cout << "all peaches"<< endl;
-   std::for_each(basket.cbegin(), basket.cend(),
+   for_each(basket.cbegin(), basket.cend(),
                  [](const Peaches& peach) { peach.print(); });
 
    deque<Peaches> peck;
-   std::remove_copy_if(basket.cbegin(), basket.cend(),
-                       std::front_inserter(peck),
+   remove_copy_if(basket.cbegin(), basket.cend(),
+                       front_inserter(peck),
                        [](const Peaches& peach) { return !peach.ripe; });
-   basket.erase(std::remove_if(basket.begin(), basket.end(),
+   basket.erase(remove_if(basket.begin(), basket.end(),
                                [](const Peaches& peach) {
                                   return peach.ripe;
                                }),
                 basket.end());
 
    cout << "peaches remaining in the basket"<< endl;
-   std::for_each(basket.cbegin(), basket.cend(),
+   for_each(basket.cbegin(), basket.cend(),
                  [](const Peaches& peach) { peach.print(); });
 
    cout << endl;
 
    cout << "peaches moved to the peck"<< endl;
-   std::for_each(peck.cbegin(), peck.cend(),
+   for_each(peck.cbegin(), peck.cend(),
                  [](const Peaches& peach) { peach.print(); });
 
 
@@ -79,24 +77,24 @@ int main(){
    cout << "\nevery " << space << "\'d peach in the peck"<< endl;
 
    auto peach = peck.cbegin();
-   while (std::distance(peach, peck.cend()) >= space) {
-      std::advance(peach, space - 1);
+   while (distance(peach, peck.cend()) >= space) {
+      advance(peach, space - 1);
       peach->print();
-      std::advance(peach, 1);
+      advance(peach, 1);
    }
 
 
    const double weightToJam = 10.0;
-   using std::placeholders::_1;
-   const auto shouldJam = std::bind(lighterThan, _1, weightToJam);
+   using placeholders::_1;
+   const auto shouldJam = bind(lighterThan, _1, weightToJam);
 
-   const double jamWeight = std::accumulate(
+   const double jamWeight = accumulate(
       peck.cbegin(), peck.cend(), 0.0,
       [&shouldJam](double total, const Peaches& current) {
          return total + (shouldJam(current) ? current.weight : 0.0);
       });
 
-   peck.erase(std::remove_if(peck.begin(), peck.end(), shouldJam), peck.end());
+   peck.erase(remove_if(peck.begin(), peck.end(), shouldJam), peck.end());
 
    cout << "Weight of jam is: " << jamWeight << endl;
 

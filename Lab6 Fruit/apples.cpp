@@ -13,9 +13,7 @@
 #include <vector>
 #include <string>
 
-using std::cin; using std::cout; using std::endl;
-using std::string;
-using std::vector;
+using namespace std;
 
 struct Apples{
    double weight; // oz
@@ -37,7 +35,7 @@ int main(){
    vector <Apples> crate(size);
 
    // assign random weight and color to apples in the crate
-   std::generate(crate.begin(), crate.end(), [=]() {
+   generate(crate.begin(), crate.end(), [=]() {
       return Apples{minWeight + static_cast<double>(rand()) / RAND_MAX *
                     (maxWeight - minWeight),
                     rand() % 2 == 1 ? "green" : "red"};
@@ -45,7 +43,7 @@ int main(){
 
 
    cout << "all apples"<< endl;
-   std::for_each(crate.cbegin(), crate.cend(),
+   for_each(crate.cbegin(), crate.cend(),
                  [](const Apples& apple) { apple.print(); });
 
    
@@ -53,7 +51,7 @@ int main(){
    double toFind;
    cin >> toFind;
 
-   const auto cnt = std::count_if(crate.cbegin(), crate.cend(),
+   const auto cnt = count_if(crate.cbegin(), crate.cend(),
                                   [=](const Apples& apple) {
                                      return apple.weight > toFind;
                                   });
@@ -63,17 +61,17 @@ int main(){
 
    cout << "at positions ";
    auto apple = crate.cbegin();
-   while ((apple = std::find_if(apple, crate.cend(),
+   while ((apple = find_if(apple, crate.cend(),
                                 [=](const Apples& current) {
                                    return current.weight > toFind;
                                 })) != crate.cend()) {
-      cout << std::distance(crate.cbegin(), apple) << ", ";
+      cout << distance(crate.cbegin(), apple) << ", ";
       ++apple;
    }
    cout << endl;
 
 
-   const auto heaviest = std::max_element(
+   const auto heaviest = max_element(
       crate.cbegin(), crate.cend(),
       [](const Apples& left, const Apples& right) {
          return left.weight < right.weight;
@@ -84,7 +82,7 @@ int main(){
       cout << "The crate is empty" << endl;
 
 
-   const double sum = std::accumulate(
+   const double sum = accumulate(
       crate.cbegin(), crate.cend(), 0.0,
       [](double total, const Apples& apple) {
          return total + apple.weight;
@@ -95,7 +93,7 @@ int main(){
    cout << "How much should they grow: ";
    double toGrow;
    cin >> toGrow;
-   std::transform(crate.cbegin(), crate.cend(), crate.begin(),
+   transform(crate.cbegin(), crate.cend(), crate.begin(),
                   [=](Apples apple) {
                      apple.weight += toGrow;
                      return apple;
@@ -107,7 +105,7 @@ int main(){
 
 
    // erase-remove idiom removes all apples below the acceptable weight
-   crate.erase(std::remove_if(crate.begin(), crate.end(),
+   crate.erase(remove_if(crate.begin(), crate.end(),
                               [=](const Apples& apple) {
                                  return apple.weight < minAccept;
                               }),
@@ -115,14 +113,14 @@ int main(){
    cout << "removed " << size - crate.size() << " elements" << endl;
 
 
-   std::sort(crate.begin(), crate.end(),
+   sort(crate.begin(), crate.end(),
              [](const Apples& left, const Apples& right) {
                 return left.weight < right.weight;
              });
 
 
    cout << "sorted remaining apples"<< endl;
-   std::for_each(crate.cbegin(), crate.cend(),
+   for_each(crate.cbegin(), crate.cend(),
                  [](const Apples& apple) { apple.print(); });
 
 }

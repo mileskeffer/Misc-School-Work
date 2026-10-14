@@ -10,9 +10,7 @@
 #include <map>
 #include <string>
 
-using std::cin; using std::cout; using std::endl;
-using std::string;
-using std::multimap;
+using namespace std;
 
 enum class Variety {orange, pear, apple};
 const string colors[] = {"red", "green", "yellow"};

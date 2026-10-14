@@ -9,8 +9,7 @@
 #include <cstdlib>
 #include <queue>
 
-using std::cin; using std::cout; using std::endl;
-using std::priority_queue;
+using namespace std;
 
 struct Lemon {
     double quality;
