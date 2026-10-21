@@ -1,0 +1,394 @@
+CS3 CODE REVIEW - PREDICTED QUIZ 7
+Lab 7: Logger Singleton and Rock-Paper-Scissors
+
+Scope and prediction basis
+--------------------------
+This quiz focuses on Logger.hpp and the RockPaperScissors class plus its invocation.
+The supplied Game template is used only to explain how the added game runs. Chess,
+Monopoly, and append.cpp are not independent question topics.
+
+The photographed Quiz 1-3 examples each have 10 multiple-choice questions with four
+options and one best answer. They emphasize the student's exact implementation,
+execution traces, the purpose of statements, and edge cases. Questions 1-10 are my
+highest-priority predictions; questions 11-20 are close alternatives, and questions
+21-30 provide additional practice on the same additions. This ranking
+is a qualitative judgment from those examples, not a measured probability or a
+recovery of the instructor's actual questions.
+
+Choose the single best answer. Assume the code is used exactly as currently written.
+
+
+QUESTIONS 1-10: HIGHEST-PRIORITY PREDICTIONS
+==========================================
+
+1. Why does getInstance() declare its Logger object as a function-local static?
+
+   static Logger instance;
+   return instance;
+
+   A. To construct a new Logger on every call
+   B. To construct the Logger on the first call and reuse it on later calls
+   C. To destroy the Logger whenever getInstance() returns
+   D. To make every calling function receive a separate log file
+
+
+2. Which features prevent ordinary client code from creating or copying another Logger?
+
+   A. The public report() method and the use of endl
+   B. The ofstream member and the header guard alone
+   C. The static getInstance() method alone
+   D. The private constructor and deleted copy constructor and copy-assignment operator
+
+
+3. If log.txt already contains messages, what does opening it with ios::app do?
+
+   A. Preserve existing contents and append subsequent messages at the end
+   B. Erase the existing contents before the first report
+   C. Read existing messages without allowing new output
+   D. Refuse to open the file because it already exists
+
+
+4. Why does getInstance() return Logger& rather than Logger by value?
+
+   A. A reference automatically closes log.txt after every report
+   B. A reference creates a separate Logger for each caller
+   C. Callers can use the same Logger object without copying it
+   D. A reference allows callers to use the private constructor directly
+
+
+5. When is the function-local static Logger normally destroyed?
+
+   A. Immediately after the first report() call
+   B. During normal program termination, when its destructor closes the file
+   C. Every time getInstance() returns
+   D. Only if a client explicitly calls delete on the returned reference
+
+
+6. RockPaperScissors does not define its own playGame(). How does the inherited method
+   still run the rock-paper-scissors implementation?
+
+   A. playGame() identifies the game by comparing its class name as a string.
+   B. The compiler copies the Chess method bodies into RockPaperScissors.
+   C. Each makeMove() call recursively invokes main().
+   D. The inherited algorithm calls virtual operations overridden by RockPaperScissors.
+
+
+7. What happens during makeMove(0) in RockPaperScissors?
+
+   A. The computer stores a random r/p/s choice and returns before reading human input.
+   B. The human enters a choice and the computer immediately declares a winner.
+   C. The computer always selects rock.
+   D. The method randomly assigns playerWon_ and ends the game.
+
+
+8. What happens when the human and computer choices match?
+
+   A. playerWon_ becomes 1 because the human wins ties.
+   B. playerWon_ becomes 0 because the computer wins ties.
+   C. A draw is printed, playerWon_ remains noWinner, and another round begins.
+   D. The program ends without calling printWinner().
+
+
+9. The computer has selected rock. The human enters x and then p. What happens?
+
+   A. x is treated as scissors, so the computer wins immediately.
+   B. The program requests another token, keeps the computer's rock choice, and the human wins.
+   C. The computer chooses a new random move after x.
+   D. The invalid token ends the game with the input-closed message.
+
+
+10. What happens if cin >> humanChoice fails because input reaches EOF?
+
+    A. The program keeps prompting forever without changing its state.
+    B. playerWon_ becomes 0 and the computer is declared the winner.
+    C. playerWon_ becomes 1 and the human is declared the winner.
+    D. inputEnded_ becomes true, the loop ends, and printWinner() reports input closed.
+
+
+QUESTIONS 11-20: CLOSE ALTERNATIVES
+==================================
+
+11. What happens if Logger's constructor cannot open log.txt?
+
+    A. It returns a Logger with an empty filename and continues.
+    B. It throws std::out_of_range explicitly.
+    C. It prints an error to cerr and calls exit(EXIT_FAILURE).
+    D. It sends every later report to cout automatically.
+
+
+12. What does the endl in report() do?
+
+    A. Write a newline and flush the log output stream
+    B. Close log.txt permanently
+    C. Erase the previously written message
+    D. Destroy the singleton so the next call creates a new file
+
+
+13. What is the purpose of the LAB7_LOGGER_HPP header guard?
+
+    A. To make report() thread-safe
+    B. To prevent the class definition from being processed more than once in one translation unit
+    C. To make getInstance() run before main()
+    D. To delete log.txt when compilation completes
+
+
+14. Which human inputs does the current validation accept as a legal move?
+
+    A. Only r, p, and s in lowercase
+    B. Any word beginning with r, p, or s
+    C. rock, paper, and scissors, in any capitalization
+    D. Exactly r, p, s, R, P, and S as individual input tokens
+
+
+15. The computer selects paper and the human enters S. What does the game do?
+
+    A. It rejects uppercase S and requests another input.
+    B. It sets playerWon_ to 0 and prints "Computer won!".
+    C. It converts S to s, sets playerWon_ to 1, and prints "You won!".
+    D. It leaves playerWon_ equal to noWinner because scissors and paper draw.
+
+
+16. The computer selects scissors and the human enters p. What is playerWon_ set to?
+
+    A. 0, identifying the computer as the winner
+    B. 1, identifying the human as the winner
+    C. -1, indicating another round is required
+    D. 2, identifying scissors as the winning move
+
+
+17. Why does RockPaperScissors::initializeGame() reset both playerWon_ and inputEnded_?
+
+    A. To reseed rand() before every turn
+    B. To clear the terminal input stream's error flags
+    C. To preserve the previous winner for the next game
+    D. To let a new game start without inheriting a previous winner or input-ended flag
+
+
+18. Why can rockPaperScissors.playGame() safely begin its turn loop even though the
+    inherited method's default playersCount argument is 0?
+
+    A. The loop automatically changes any zero divisor to 1.
+    B. initializeGame() sets playersCount_ to 2 before the loop begins.
+    C. RockPaperScissors overrides playGame() with a default argument of 2.
+    D. The turn loop never uses playersCount_.
+
+
+19. A game has two draws followed by a decisive human win. What is movesCount_ after
+    that winning human turn, assuming playGame() started it at zero?
+
+    A. 1, because only the decisive round is counted
+    B. 6, because each individual player turn increments the counter
+    C. 3, because the counter increments after each human turn, including draws
+    D. 2, because the winning turn exits before the counter can increment
+
+
+20. Why does RockPaperScissors override endOfGame() instead of using only the inherited
+    check playerWon_ != noWinner?
+
+    A. The override must also end the game when input ends without a winner.
+    B. The inherited method cannot be called by playGame().
+    C. The override is necessary to make every draw count as a human victory.
+    D. The inherited method always returns true at the start of a game.
+
+
+QUESTIONS 21-30: ADDITIONAL PRACTICE
+===================================
+
+21. Why can a caller use Logger::getInstance() without first creating a Logger object?
+
+    A. getInstance() is a constructor with a different name.
+    B. All public member functions can be called without an object.
+    C. getInstance() is a static member function.
+    D. Including Logger.hpp automatically constructs a Logger in every function.
+
+
+22. Which declaration correctly binds a local name to the existing singleton without
+    attempting to copy it?
+
+    A. auto& logger = Logger::getInstance();
+    B. auto logger = Logger::getInstance();
+    C. Logger logger;
+    D. Logger logger(Logger::getInstance());
+
+
+23. Logger opens the relative filename "log.txt". What determines where it is opened
+    or created when getInstance() first constructs the singleton?
+
+    A. The directory containing Logger.hpp, regardless of how the program is launched
+    B. The directory containing the C++ compiler
+    C. The user's Documents directory in every run
+    D. The process's current working directory at the time the file is opened
+
+
+24. Why does report() take its message as const string&?
+
+    A. It stores a permanent reference to the caller's string in log_.
+    B. It can read the argument without an extra parameter copy or modifying it through that reference.
+    C. It must change the caller's message to append a newline.
+    D. It guarantees that writing to the file cannot fail.
+
+
+25. What does override do on RockPaperScissors::makeMove(int player)?
+
+    A. It makes the method callable only from main().
+    B. It prevents Game::playGame() from calling the method.
+    C. It requires the compiler to verify that the method overrides a base-class virtual method.
+    D. It changes every call into a recursive call to makeMove().
+
+
+26. Consider these two calls from ordinary client code in main():
+
+    RockPaperScissors game;
+    game.initializeGame();
+    game.playGame();
+
+    Which statement is correct about access control?
+
+    A. initializeGame() is protected and cannot be called there; inherited playGame() is public.
+    B. Both methods are protected because RockPaperScissors uses a protected: section.
+    C. Both methods are public because Game is inherited publicly.
+    D. playGame() is private because it is not redeclared in RockPaperScissors.
+
+
+27. The computer-choice branch creates a local array and then returns:
+
+    const string choices[] = {"r", "p", "s"};
+    computerChoice_ = choices[rand() % 3];
+    return;
+
+    Why is computerChoice_ still usable on the human's turn after choices is destroyed?
+
+    A. Local arrays remain alive until the entire program ends.
+    B. Returning from makeMove() transfers the local array into Game.
+    C. computerChoice_ is a reference that extends the array's lifetime.
+    D. Assignment copies the selected string value into the object's string member.
+
+
+28. What does break do after a legal human input is recognized inside while (true)?
+
+    A. It exits playGame() immediately without deciding a winner.
+    B. It exits only the validation loop, allowing the code below to reveal the computer's choice
+       and decide the round's result.
+    C. It destroys the RockPaperScissors object.
+    D. It skips directly to the computer's next turn without comparing choices.
+
+
+29. The human-winning condition joins three winning combinations with ||. What would
+    happen if only those two || operators were replaced with &&?
+
+    A. Every draw would become a human win.
+    B. The program would fail to compile because && cannot combine comparisons.
+    C. The human-winning branch could never match; every non-draw would be a computer win.
+    D. All three winning combinations would still work the same way.
+
+
+30. Suppose the computer selects rock in each of the first two rounds. The human
+    supplies the text below on one input line, followed by a newline:
+
+    r p
+
+    What happens in this game?
+
+    A. The first extraction reads r and produces a draw; the next human turn reads p and wins.
+    B. The entire line "r p" is read as one invalid move.
+    C. The first extraction reads r, and the remaining p is automatically discarded.
+    D. The program requires a separate input line for every move, so it reports input closed.
+
+
+ANSWER KEY AND EXPLANATIONS
+===========================
+
+1.  B - A function-local static is initialized when its declaration is first reached.
+        The same object persists and is returned by later getInstance() calls.
+2.  D - Ordinary callers cannot invoke the private constructor. The deleted copy
+        operations also prevent making or assigning copies of the singleton.
+3.  A - Append mode preserves existing data and puts new output at the file's end.
+4.  C - Returning a reference exposes the existing singleton without copying it.
+5.  B - After successful construction, the static Logger is destroyed during normal
+        termination. Its destructor calls log_.close().
+6.  D - Game::playGame() supplies the algorithm. Virtual dispatch invokes the added
+        initializeGame(), makeMove(), endOfGame(), and printWinner() overrides.
+7.  A - Player 0 is the computer. Its branch stores choices[rand() % 3] and returns;
+        player 1's branch reads and validates the human's input.
+8.  C - A draw does not assign a winner. With inputEnded_ still false, endOfGame()
+        is false and the template begins another round with a fresh computer choice.
+9.  B - Invalid input stays inside the human's validation loop. The computer's stored
+        choice is unchanged; paper beats rock, so playerWon_ becomes 1.
+10. D - Failed extraction sets inputEnded_ and returns. The next endOfGame() check
+        stops the loop; printWinner() gives the input-closed message, not a winner.
+11. C - The constructor checks !log_, writes "Unable to open log.txt" to cerr,
+        and terminates the process with a failure status.
+12. A - report() writes the message followed by a newline and flushes the stream.
+13. B - The guard prevents repeated inclusion from redefining Logger within the
+        same translation unit. The local static implements singleton lifetime.
+14. D - Only the three exact uppercase tokens are normalized. Full words such as
+        "rock" and mixed tokens such as "Rr" fail the exact-string checks.
+15. C - S becomes s. The (human s && computer p) condition is a human win.
+16. A - Paper loses to scissors. Neither a draw nor a human-winning condition
+        matches, so the final else assigns playerWon_ = 0.
+17. D - Initialization restores noWinner and false. It does not call cin.clear();
+        reusing the object after EOF still requires usable input for human moves.
+18. B - playGame() calls initializeGame() before evaluating the turn loop. The
+        override replaces the initial zero player count with 2.
+19. C - In a two-player game, the human has index 1, which equals playersCount_ - 1.
+        After makeMove(1) returns, the template increments movesCount_, even on the
+        winning turn. Draws also count, so the final value is 3.
+20. A - The inherited hook checks only for a winner. Failed input leaves no winner,
+        so the added inputEnded_ condition is necessary to terminate that case.
+
+21. C - A static member function is called on the class without an existing object.
+        This lets the accessor provide the first and subsequent uses of the singleton.
+
+22. A - auto& preserves reference binding. Plain auto drops the returned reference
+        and would attempt to create a Logger value using the deleted copy constructor.
+        C calls the private constructor; D also attempts a forbidden copy.
+
+23. D - "log.txt" has no directory component. The open call resolves it relative
+        to the process's current working directory, which can differ from the source
+        or executable directory.
+
+24. B - The parameter is a read-only reference, avoiding an extra string copy for
+        parameter passing. report() writes its contents immediately; it does not
+        store the reference. Temporary strings can also bind to this parameter.
+
+25. C - override checks the inheritance contract at compile time. For example,
+        an incompatible parameter type would be diagnosed rather than silently
+        creating an unrelated overload.
+
+26. A - The added overrides are protected. Public inheritance preserves access
+        to Game's public playGame(); the later protected: label does not change it.
+        playGame() can invoke the protected overrides through virtual dispatch.
+
+27. D - computerChoice_ is an owning string data member, not a pointer or reference
+        into choices. Destroying the local array does not invalidate its copied value.
+
+28. B - break exits the nearest loop. Here it exits while (true) inside makeMove(),
+        after which execution continues with the computer-choice output and comparison.
+
+29. C - A single humanChoice cannot simultaneously equal r, p, and s. The three
+        winning combinations are alternatives, so they require ||. With &&, draws
+        still use the earlier equality branch, but every non-draw reaches the final
+        else and assigns playerWon_ = 0.
+
+30. A - cin >> string extracts whitespace-delimited tokens rather than whole lines.
+        The p remains available after the first turn reads r. Following the draw,
+        the next round reads p, which beats the stipulated computer rock choice.
+
+
+INFERRED GENERATION PROMPT, ADAPTED TO YOUR LAB 7 SCOPE
+=====================================================
+
+"Create a 10-question CS3 code-review quiz about the student's added Logger.hpp
+and RockPaperScissors implementation. The rest of the supplied game code is a lab
+template; use it only as context for the added class's behavior. Use four choices
+(A-D), one best answer, and a separate answer key. Test the singleton's construction,
+access, lifetime, and append behavior; the game extension's virtual overrides,
+turn handling, winner logic, validation, draws, and EOF behavior. Include short
+code fragments and concrete traces. Use plausible distractors based on common
+misreadings of this exact code."
+
+This is a reconstruction of the apparent question style, not the original prompt.
+The singleton mechanisms and added game's control-flow details rank highest because
+they match the repeated representation, line-purpose, trace, and edge-case questions
+in the photographed examples. There is no later photographed quiz here to establish
+how the instructor will divide questions between the two Lab 7 additions.
