@@ -1,0 +1,16 @@
+CXX := g++
+CXXFLAGS := -std=c++11 -Wall -Wextra -pedantic
+TARGETS := singletonLogger templateMethodGames
+
+.PHONY: all clean
+
+all: $(TARGETS)
+
+singletonLogger: singletonLogger.cpp Logger.hpp
+	$(CXX) $(CXXFLAGS) singletonLogger.cpp -o $@
+
+templateMethodGames: templateMethodGames.cpp
+	$(CXX) $(CXXFLAGS) templateMethodGames.cpp -o $@
+
+clean:
+	rm -f $(TARGETS)
