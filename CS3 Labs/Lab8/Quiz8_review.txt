@@ -12,6 +12,7 @@ The starter commit (c652179) was compared with the finished Lab 8 commit (0bfe93
 to emphasize your changes: separate border/interior paint, FullyFilled and
 RandomFilled, the eight-car lot, buyer searches, shared model selection, and safe
 deletion through Car*. Supplied framework code is included where it explains
+those changes. The separate carTest.cpp factory demo is not a main question topic.
 
 Questions 1-10 are the strongest predictions; 11-30 provide wider practice. This
 is a judgment based on the examples and your code, not a measured probability.
