@@ -3,28 +3,34 @@
 // it is bridged over Figure --> Fill abstract body/handle
 // Mikhail Nesterenko
 // 2/12/2014
+// modified by Miles Keffer
+// 10/28/2026
 
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 
-using std::cout; using std::endl; using std::cin;
+using std::cout; using std::endl;
 
-// abstract body 
+// abstract body
 class Fill{
 public:
-   Fill(char fillChar): fillChar_(fillChar){}
+   Fill(char borderChar, char internalChar):
+      borderChar_(borderChar), internalChar_(internalChar){}
    virtual char getBorder()=0;
    virtual char getInternal()=0;
    virtual ~Fill() {}
 protected:
-   char fillChar_;
+   char borderChar_;   // border paint
+   char internalChar_; // internal paint
 };
 
 // concrete body
 class Hollow: public Fill{
 public:
-   Hollow(char fillChar):Fill(fillChar){}
-   char getBorder() override {return fillChar_;}
-   char getInternal() override {return ' ';}
+   Hollow(char borderChar):Fill(borderChar, ' '){}
+   char getBorder() override {return borderChar_;}
+   char getInternal() override {return internalChar_;}
    ~Hollow() override {}
 };
 
@@ -32,10 +38,32 @@ public:
 // another concrete body
 class Filled: public Fill {
 public:
-   Filled(char fillChar):Fill(fillChar){}
-   char getBorder() override {return fillChar_;}
-   char getInternal() override {return fillChar_;}
+   Filled(char fillChar):Fill(fillChar, fillChar){}
+   char getBorder() override {return borderChar_;}
+   char getInternal() override {return internalChar_;}
    ~Filled() override {}
+protected:
+   // lets derived classes use different border and internal paint
+   Filled(char borderChar, char internalChar):Fill(borderChar, internalChar){}
+};
+
+// filled, but border and inside painted differently
+class FullyFilled: public Filled {
+public:
+   FullyFilled(char borderChar, char internalChar):
+      Filled(borderChar, internalChar){}
+   ~FullyFilled() override {}
+};
+
+// each paint request randomly returns one of the two characters
+class RandomFilled: public Fill {
+public:
+   RandomFilled(char firstChar, char secondChar):Fill(firstChar, secondChar){}
+   char getBorder() override {return randomChar();}
+   char getInternal() override {return randomChar();}
+   ~RandomFilled() override {}
+private:
+   char randomChar() const {return rand() % 2 == 0 ? borderChar_ : internalChar_;}
 };
 
 // abstract handle
@@ -69,46 +97,35 @@ void Square::draw(){
 }
 
 int main(){
+   srand(time(nullptr));
 
-  
    Fill* hollowPaintStar = new Hollow('*');
    Fill* filledPaintJ = new Filled('j');
-   
-   Figure *smallBox = new Square(24, hollowPaintStar);
-   Figure *bigBox = new Square(40, filledPaintJ);
-   
-   smallBox->draw();
-   cout << endl;
-   bigBox -> draw();
-   
-  
-   // ask user for figure parameters
-   cout << "Enter fill character: "; 
-            char fchar; cin >> fchar;
-   cout << "Filled or hollow? [f/h] "; 
-           char ifFilled; cin >> ifFilled;
-   cout << "Enter size: "; int size; cin >> size;
-   /*
-   Figure *userBox = new Square(size, ifFilled == 'f'? 
-	       static_cast<Fill *>(new Filled(fchar)):
-	       static_cast<Fill *>(new Hollow(fchar))
-	       );
-   */
+   Fill* fullyFilledPaint = new FullyFilled('#', 'o');
+   Fill* randomFilledPaint = new RandomFilled('x', '.');
 
-   /*
-   Figure *userBox = new Square(size, ifFilled == 'f'? 
-	       new Filled(fchar):
-	       new Hollow(fchar)
-	       ); 
-   */
-      
-   
-   Figure *userBox = ifFilled == 'f'?
-      new Square(size, new Filled(fchar)):
-      new Square(size, new Hollow(fchar));
-       
-   
-   userBox -> draw();
+   Figure *hollowBox = new Square(10, hollowPaintStar);
+   Figure *filledBox = new Square(10, filledPaintJ);
+   Figure *fullyFilledBox = new Square(10, fullyFilledPaint);
+   Figure *randomFilledBox = new Square(10, randomFilledPaint);
+
+   cout << "Hollow('*'):" << endl;
+   hollowBox -> draw();
    cout << endl;
-   
+
+   cout << "Filled('j'):" << endl;
+   filledBox -> draw();
+   cout << endl;
+
+   cout << "FullyFilled('#', 'o'):" << endl;
+   fullyFilledBox -> draw();
+   cout << endl;
+
+   cout << "RandomFilled('x', '.'):" << endl;
+   randomFilledBox -> draw();
+   cout << endl;
+
+   delete hollowBox; delete filledBox; delete fullyFilledBox; delete randomFilledBox;
+   delete hollowPaintStar; delete filledPaintJ;
+   delete fullyFilledPaint; delete randomFilledPaint;
 }

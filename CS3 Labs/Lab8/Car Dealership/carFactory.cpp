@@ -1,25 +1,35 @@
 // implementation of carFactory
 // Mikhail Nesterenko
 // 7/16/2014
+// modified by Miles Keffer
+// 10/28/2026
 
 #include <array>
 #include <cstdlib>
-#include "CarFactory.hpp"
+#include "carFactory.hpp"
 
 
 // product methods
-Ford::Ford(){
+std::string Ford::randomModel(){
    static const std::array<std::string, 4>
-      models = {"Focus", "Mustang", "Explorer", "F-150"};
+      models = {"Focus ST", "Mustang", "Explorer", "F-150"};
+   return models[rand() % models.size()];
+}
+
+Ford::Ford(){
    make_ = "Ford";
-   model_ = models[rand() % models.size()];
+   model_ = randomModel();
+}
+
+std::string Toyota::randomModel(){
+   static const std::array<std::string, 5>
+      models = {"GR Corolla", "GR Supra", "Prius", "4Runner", "GR GT"};
+   return models[rand() % models.size()];
 }
 
 Toyota::Toyota(){
-   static const std::array<std::string, 5>
-      models = {"Corolla", "Camry", "Prius", "4Runner", "Yaris"};
    make_ = "Toyota";
-   model_ = models[rand() % models.size()];
+   model_ = randomModel();
 }
 
 
