@@ -1,0 +1,421 @@
+CS3 CODE REVIEW - PREDICTED QUIZ 8
+Bridge Painted Square and Car Dealership
+30 questions with answers and explanations
+
+Prediction basis
+----------------
+The six photographs in CS3 Labs/quizdata show Quiz 1-3 asking about exact data
+representation, statement purpose, concrete execution traces, and edge cases.
+This practice set follows their four-choice, single-best-answer format.
+
+The starter commit (c652179) was compared with the finished Lab 8 commit (0bfe938)
+to emphasize your changes: separate border/interior paint, FullyFilled and
+RandomFilled, the eight-car lot, buyer searches, shared model selection, and safe
+deletion through Car*. Supplied framework code is included where it explains
+
+Questions 1-10 are the strongest predictions; 11-30 provide wider practice. This
+is a judgment based on the examples and your code, not a measured probability.
+Assume the programs run exactly as currently written and allocations succeed.
+
+
+QUESTIONS 1-10: HIGHEST-PRIORITY PREDICTIONS
+==========================================
+
+1. Why was Fill changed to store borderChar_ and internalChar_ separately?
+
+   A. To force every figure to use a random border
+   B. To let a fill implementation provide different border and interior characters
+   C. To store each square's width and height
+   D. To keep separate characters for Ford and Toyota cars
+
+
+2. FullyFilled does not define getBorder() or getInternal(). How can a
+   FullyFilled('#', 'o') object still provide the correct characters?
+
+   A. FullyFilled is abstract and therefore cannot be instantiated.
+   B. Square automatically chooses # and o without calling the fill object.
+   C. The compiler generates random getter implementations.
+   D. FullyFilled inherits Filled's getters and initializes the two characters
+      through Filled's protected two-argument constructor.
+
+
+3. What is distinctive about RandomFilled('x', '.') when a square is drawn?
+
+   A. Each requested border or interior character is selected by a new rand() call.
+   B. One character is randomly selected for the entire square during construction.
+   C. Border cells are always x and interior cells are always dots.
+   D. The characters must alternate x, dot, x, dot across every row.
+
+
+4. How does Miles's CarLot represent the cars available for sale?
+
+   A. One Car* named car4sale_, replaced after every test drive
+   B. Eight separate CarFactory objects, one for each car
+   C. A vector<Car*> filled with eight cars during construction
+   D. A map from buyer names to cars they have already purchased
+
+
+5. Why does CarLot's constructor initialize current_ to lot_.size() - 1?
+
+   A. nextCar() increments first, so its first call wraps to index 0.
+   B. The last car must always be sold first.
+   C. This makes lotSize() report zero until the first purchase.
+   D. Vector indices begin at 1 rather than 0.
+
+
+6. What does buyCar() do to the currently selected lot entry?
+
+   A. Erase it from the vector and reduce the lot size
+   B. Return the replacement car and delete the selected car internally
+   C. Replace the entire inventory with eight cars of the requested make
+   D. Save its old pointer, replace that entry with a randomly requested car,
+      and return the old pointer
+
+
+7. A buyer wants a Toyota Prius. Which car satisfies shopFor()'s purchase test?
+
+   A. Any Toyota, regardless of its model
+   B. A car whose make is Toyota and whose model is Prius
+   C. Any car whose model differs from Prius
+   D. The first car tested, regardless of make and model
+
+
+8. When is the desired model chosen for one call to toyotaLover(id)?
+
+   A. Once for every car that shopFor() test-drives
+   B. Only after the buyer has already bought a car
+   C. Once when Toyota::randomModel() supplies the argument to shopFor()
+   D. It is always the model of the first car on the lot.
+
+
+9. Ignoring any label printed by main(), what does a size-3 Square using
+   FullyFilled('#', 'o') draw?
+
+   A.
+      ooo
+      o#o
+      ooo
+
+   B.
+      ###
+      # #
+      ###
+
+   C.
+      #o#
+      o#o
+      #o#
+
+   D.
+      ###
+      #o#
+      ###
+
+
+10. What happens immediately after shopFor() finds and purchases a matching car?
+
+    A. The purchased object is deleted and shopFor() returns without testing more cars.
+    B. The buyer continues searching for a cheaper matching car.
+    C. The lot is reset so the next buyer always starts at index 0.
+    D. All other cars with the same model are removed from the lot.
+
+
+QUESTIONS 11-30: ADDITIONAL PRACTICE
+===================================
+
+11. Which relationship provides the Bridge between a square and its painting behavior?
+
+    A. RandomFilled stores a Square object inside itself.
+    B. Figure holds a Fill* and Square delegates character selection to that object.
+    C. Every possible paint style requires a different Square subclass.
+    D. FordFactory creates a different Square for every car model.
+
+
+12. How many # characters and o characters are drawn by the size-10 square using
+    FullyFilled('#', 'o') in main()? Count drawing characters only.
+
+    A. 40 # characters and 60 o characters
+    B. 20 # characters and 80 o characters
+    C. 36 # characters and 64 o characters
+    D. 100 # characters and 100 o characters
+
+
+13. How do Hollow('*') and Filled('j') initialize their two paint characters?
+
+    A. Hollow uses * for the border and a space inside; Filled uses j for both.
+    B. Hollow uses a space for the border and * inside; Filled uses j for both.
+    C. Both use a space inside regardless of their constructor arguments.
+    D. Both select their interior character randomly.
+
+
+14. What does a size-1 Square using FullyFilled('#', 'o') draw?
+
+    A. One o followed by a newline
+    B. Nothing, because there is no interior
+    C. A # followed by an o on the same line
+    D. One # followed by a newline
+
+
+15. What happens if a square uses RandomFilled('x', 'x')?
+
+    A. The code rejects equal constructor arguments.
+    B. The square has an x border and an empty interior.
+    C. Every drawn cell is x even though the random-selection code still runs.
+    D. RandomFilled substitutes a dot for the second x automatically.
+
+
+16. If the same RandomFilled object paints a square twice, what is true?
+
+    A. It must reproduce the first drawing because the characters were cached.
+    B. Character choices are generated again; the two drawings may differ but
+       are not guaranteed to differ.
+    C. It must produce the opposite character at every cell on the second drawing.
+    D. The second call cannot draw because rand() can be used only once.
+
+
+17. Why does main() delete each paint object separately after deleting the figures?
+
+    A. Deleting a Figure automatically creates a replacement paint object.
+    B. The two sets of delete statements delete the same objects twice.
+    C. All Fill objects are local automatic objects.
+    D. Figure's destructor does not delete the Fill* it stores.
+
+
+18. Why is Fill's virtual destructor relevant to this cleanup?
+
+    Fill* paint = new RandomFilled('x', '.');
+    delete paint;
+
+    A. It allows destruction through Fill* to invoke the derived destructor correctly.
+    B. It causes getBorder() to run one final time.
+    C. It makes delete unnecessary for dynamically allocated fills.
+    D. It automatically deletes every Figure that has used the paint.
+
+
+19. Why was a virtual destructor added to Car?
+
+    A. To make getMake() return a random string
+    B. To prevent a factory from creating more than one car
+    C. To allow a Ford or Toyota object to be safely deleted through a Car* pointer
+    D. To decrement numCarsInProduction_ automatically
+
+
+20. With eight lot entries and current_ equal to 6, which indices do three consecutive
+    calls to nextCar() return, assuming no inventory changes between calls?
+
+    A. 6, 7, 0
+    B. 7, 0, 1
+    C. 7, 8, 9
+    D. 0, 1, 2
+
+
+21. Suppose current_ is 2 when shopFor() begins, and none of the eight cars matches.
+    How many test drives occur, and what is current_ afterward?
+
+    A. Eight test drives; current_ is 2 again.
+    B. Six test drives; current_ is 7.
+    C. Eight test drives; current_ is reset to 0.
+    D. The loop runs forever because nextCar() wraps around.
+
+
+22. A buyer purchases the car at index 3, and buyCar() replaces it. Which lot index
+    does the next buyer test first?
+
+    A. 0, because shopFor() resets the index on entry
+    B. 3, because the replacement must be tested immediately
+    C. 7, because every search starts at the end
+    D. 4, because current_ remains 3 and nextCar() increments it
+
+
+23. What is the purpose of this check in shopFor()?
+
+    if (carLotPtr == nullptr)
+       carLotPtr = new CarLot();
+
+    A. Create a separate inventory for every buyer
+    B. Create the shared lot on first use and reuse it for later buyers
+    C. Delete the previous buyer's inventory
+    D. Enforce a Singleton by making CarLot's constructor private
+
+
+24. The four factories in CarLot start with production counters of zero. What is
+    the sum of their counters after the lot is filled and two purchases occur?
+
+    A. 2
+    B. 8
+    C. 10
+    D. 12
+
+
+25. What can be concluded about a car supplied as a purchase replacement?
+
+    A. It is a newly allocated car, but its make and model may match the purchased car.
+    B. Its make must be different from the purchased car's make.
+    C. Its model must be different from every car already on the lot.
+    D. It is the same object that buyCar() returned to the caller.
+
+
+26. How is the factory for a replacement selected in carBuyer.cpp?
+
+    A. Always use the factory with the lowest production count.
+    B. Alternate strictly between Ford and Toyota factories.
+    C. Always use a factory matching the buyer's requested make.
+    D. Use rand() % factories_.size() to select a factory from the vector.
+
+
+27. Why can toyotaLover() call Toyota::randomModel() without constructing a Toyota?
+
+    A. randomModel() is a constructor with an alternative name.
+    B. Every method returning a string can be called without an object.
+    C. randomModel() is a static member function that supplies a desired model
+       without creating a car.
+    D. The call secretly allocates a Toyota and inserts it into the lot.
+
+
+28. Which statement correctly describes these constructions in ordinary client code?
+
+    Filled first('#', 'o');
+    FullyFilled second('#', 'o');
+
+    A. Both are valid because all Filled constructors are public.
+    B. The first is inaccessible because that Filled constructor is protected;
+       the second uses FullyFilled's public constructor.
+    C. Neither is valid because Filled has pure virtual getters.
+    D. The first is valid, but FullyFilled cannot accept two characters.
+
+
+29. A CarFactory starts with a production counter of 0. It supplies three cars
+    through requestCar(), and one of those cars is later deleted. What does
+    getNumCarsInProduction() return in this implementation?
+
+    A. 0, because returning a car resets the counter
+    B. 1, because deletion resets the counter to the number of factories
+    C. 2, because Car's destructor decrements the factory's counter
+    D. 3, because requests increment the counter and deleting a car does not decrement it
+
+
+30. At normal exit from carBuyer.cpp, does the source explicitly free the shared
+    CarLot, its remaining cars, and its factories?
+
+    A. No; main() never deletes carLotPtr, and there is no CarLot destructor
+       that frees the pointed-to cars and factories.
+    B. Yes; vector<Car*> automatically deletes every pointed-to Car.
+    C. Yes; destroying a global raw pointer deletes the object it points to.
+    D. Yes; buying any one car deletes the entire inventory and all factories.
+
+
+ANSWER KEY AND EXPLANATIONS
+===========================
+
+1.  B - The two members represent separate paint roles. This lets FullyFilled use
+        one character for the border and another for the interior.
+
+2.  D - FullyFilled delegates construction to Filled(borderChar, internalChar).
+        Filled's existing getters return those separately stored values; no
+        additional getter overrides are needed.
+
+3.  A - Both getters call randomChar(), which calls rand(). Square requests a
+        character for each cell, so selection happens per cell, not once per
+        figure, row, or paint object. Exact random output is not predictable here.
+
+4.  C - lot_ is a vector of Car* pointers. The constructor pushes eight requested
+        cars into it; it does not keep the starter's single car4sale_ field.
+
+5.  A - The initial index is 7. The first nextCar() computes (7 + 1) % 8 = 0.
+
+6.  D - bought saves the pointer to the selected car. That same slot receives a
+        new factory product, then bought is returned. The vector still has eight
+        entries. buyCar() itself does not delete the returned car.
+
+7.  B - Both string comparisons must succeed because the test uses &&. Merely
+        liking the make is insufficient in the updated buyer implementation.
+
+8.  C - toyotaLover() evaluates the random model argument once for the shopFor()
+        call. The wanted model stays the same throughout that search.
+
+9.  D - All cells in the first and last rows are border cells. In the middle row,
+        only the central cell is interior, giving ### / #o# / ###.
+
+10. A - delete carLotPtr->buyCar() deletes the returned purchased object after
+        the replacement is installed. return then ends this buyer's search.
+
+11. B - The figure hierarchy delegates paint behavior through Fill*. The same
+        Square implementation can draw using Hollow, Filled, FullyFilled, or
+        RandomFilled without adding a square subclass for each paint style.
+
+12. C - There are 100 cells. The interior has (10 - 2)^2 = 64 cells, leaving
+        36 border cells. Corners are counted once, not once per adjoining side.
+
+13. A - Hollow calls Fill(borderChar, ' '). Filled's one-argument constructor
+        passes fillChar for both roles.
+
+14. D - The only cell has i == 0 and j == 0, so the border branch runs. A newline
+        follows the single character. There is no interior cell.
+
+15. C - Both outcomes of randomChar() return x when the two stored characters
+        are identical. Random selection therefore cannot change the output.
+
+16. B - No drawing is cached. Each draw requests characters again, but repeated
+        random outcomes can still coincide; a different pattern is not guaranteed.
+
+17. D - Figure holds a raw pointer and its destructor is empty. Deleting a figure
+        does not recursively delete its fill. main() separately frees the paint
+        objects after it has finished using the figures.
+
+18. A - The object has a derived type but is deleted through a base pointer.
+        A virtual base destructor provides the correct destruction chain.
+
+19. C - buyCar() returns Car*, which may point to a Ford or Toyota. The added
+        virtual destructor makes deletion through that base pointer valid.
+
+20. B - nextCar() advances before returning: 6 becomes 7, then 0, then 1.
+
+21. A - The loop is bounded by lotSize(), which is eight. Eight cyclic advances
+        from index 2 return to index 2; no purchase or reset changes that index.
+
+22. D - buyCar() changes the pointer at current_ but does not change current_.
+        The next search continues from the following slot rather than restarting.
+
+23. B - All buyers use the same global pointer after its first allocation.
+        This is shared lazy initialization in this program, but the public
+        CarLot constructor does not prohibit clients from creating other lots.
+
+24. C - Filling the lot causes eight requestCar() calls. Two replacements add
+        two more calls, so the counters sum to 10, regardless of their distribution.
+
+25. A - The concrete factory's makeCar() allocates a new object. Random factory
+        and model selection impose no rule that the make or model must change.
+
+26. D - The buyer program uses the random vector-index expression. It does not
+        call getLeastBusyFactory() from the separate carTest.cpp demo.
+
+27. C - A static model-selection function is callable on the class without an
+        instance. Toyota's constructor also uses it to choose a new car's model.
+
+28. B - Filled's two-argument constructor is protected and available to its
+        derived classes. FullyFilled exposes a public constructor that delegates
+        to it. Filled's one-argument constructor remains public.
+
+29. D - requestCar() increments the factory counter, but the program contains
+        no corresponding decrement when a car is destroyed. The counter tracks
+        requests added to its initial value, not the number of surviving cars.
+
+30. A - Purchased cars are explicitly deleted, but the program omits cleanup for
+        the shared lot and its remaining allocations. Raw pointer variables and
+        vectors of raw pointers do not automatically delete their pointees.
+
+
+INFERRED QUIZ-GENERATION PROMPT
+===============================
+
+"Create a 10-question CS3 code-review quiz about the student's Lab 8 changes to
+the Bridge painted-figure program and car dealership. Use the submitted code as
+the source of truth. Emphasize new classes, constructors, separate paint values,
+random fill behavior, lot traversal, purchase replacement, matching logic, and
+object lifetime. Use four options and exactly one best answer per question.
+Include small traces, important line-purpose questions, and edge cases with
+plausible distractors. Treat starter code as context for the student's additions.
+Provide a separate answer key."
+
+This reconstructed prompt describes the apparent style of the sample quizzes;
+the original instructor prompt and exact Quiz 8 questions are not available.
