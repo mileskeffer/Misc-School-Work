@@ -1,0 +1,7 @@
+Enter the size of a square: Square size: 3
+***
+***
+***
+Enter the new size: Square size: 2
+**
+**

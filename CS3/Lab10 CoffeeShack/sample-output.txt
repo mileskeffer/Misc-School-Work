@@ -1,0 +1,19 @@
+Welcome to Coffee Shack, can I get you [l]arge, [m]edium, or [s]mall coffee? Would you like to add [s]ugar, [c]ream, [h]oney, or [d]one? Can I get your name? Please wait, Alex.
+
+Welcome to Coffee Shack, can I get you [l]arge, [m]edium, or [s]mall coffee? Would you like to add [s]ugar, [c]ream, [h]oney, or [d]one? Would you like to add [s]ugar, [c]ream, [h]oney, or [d]one? Would you like to add [s]ugar, [c]ream, [h]oney, or [d]one? Would you like to add [s]ugar, [c]ream, [h]oney, or [d]one? Can I get your name? Please wait, Brenda.
+
+Welcome to Coffee Shack, can I get you [l]arge, [m]edium, or [s]mall coffee? Would you like to add [s]ugar, [c]ream, [h]oney, or [d]one? Would you like to add [s]ugar, [c]ream, [h]oney, or [d]one? Would you like to add [s]ugar, [c]ream, [h]oney, or [d]one? Can I get your name? Please wait, Chris.
+
+
+Brenda, your medium coffee with sugar, cream, sugar is ready. It is prepared by a SeniorBarista. It will be $11, please.
+This is Brenda, I got my coffee, thank you!
+
+
+Chris, your large coffee with honey, honey is ready. It is prepared by a Manager. It will be $16, please.
+This is Chris, I got my coffee, thank you!
+
+
+Alex, your small coffee is ready. It is prepared by a JuniorBarista. It will be $5, please.
+This is Alex, I got my coffee, thank you!
+
+
