@@ -1,0 +1,13 @@
+# Miles Keffer
+CXX := g++
+CXXFLAGS := -std=c++11 -Wall -Wextra -pedantic
+
+.PHONY: all clean
+
+all: stateScheduler
+
+stateScheduler: stateScheduler.cpp
+	$(CXX) $(CXXFLAGS) stateScheduler.cpp -o $@
+
+clean:
+	rm -f stateScheduler

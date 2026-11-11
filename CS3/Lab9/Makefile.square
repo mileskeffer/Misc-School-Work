@@ -1,0 +1,13 @@
+# Miles Keffer
+CXX := g++
+CXXFLAGS := -std=c++11 -Wall -Wextra -pedantic
+
+.PHONY: all clean
+
+all: movingSquare
+
+movingSquare: movingSquare.cpp
+	$(CXX) $(CXXFLAGS) movingSquare.cpp -o $@
+
+clean:
+	rm -f movingSquare
