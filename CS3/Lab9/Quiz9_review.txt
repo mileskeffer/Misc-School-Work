@@ -1,0 +1,360 @@
+CS3 CODE REVIEW - PREDICTED QUIZ 9
+Adapter Moving Square and State Scheduler
+30 questions, answer key, and explanations
+
+Scope and prediction basis
+--------------------------
+These questions follow the photographed Quiz 1-3 examples: four options, one
+best answer, concrete code traces, statement purpose, and implementation details.
+They focus on movingSquare.cpp and stateScheduler.cpp. AdapterClass.cpp,
+AdapterObject.cpp, figuresPrivateInheritance.cpp, and stateTransitionsExample.txt
+are reference material rather than independent question topics.
+
+Questions 1-10 are the strongest predictions; 11-30 cover additional plausible
+details. The ranking is qualitative, not a measured probability. Use the current
+source code as the authority; random schedules and sample output are not fixed.
+Assume allocations succeed and no integer arithmetic overflows in these examples.
+
+Choose the single best answer.
+
+
+QUESTIONS 1-10: HIGHEST-PRIORITY PREDICTIONS
+==========================================
+
+1. Why is SquareAdapter in movingSquare.cpp an object adapter?
+
+   A. It privately inherits from LegacyRectangle.
+   B. It contains a LegacyRectangle and translates Square operations into its operations.
+   C. It creates a new Square subclass for each possible size.
+   D. It stores a queue of rectangles and dispatches them one at a time.
+
+
+2. How does SquareAdapter::size() determine the side length?
+
+   A. It returns a cached constructor argument that never changes.
+   B. It multiplies the bottom-right coordinates together.
+   C. It returns bottomRightX + topLeftX.
+   D. It returns bottomRightX - topLeftX from the adaptee's coordinates.
+
+
+3. Suppose the adaptee's top-left corner is (2, 3). What coordinates would a
+   valid resize(4) set through move()?
+
+   A. Top-left (2, 3), bottom-right (6, 7)
+   B. Top-left (0, 0), bottom-right (4, 4)
+   C. Top-left (4, 4), bottom-right (6, 7)
+   D. Top-left (2, 3), bottom-right (4, 4)
+
+
+4. A SquareAdapter currently has size 5. What does calling resize(0) directly do?
+
+   A. Resize the square to zero and print nothing
+   B. Throw std::out_of_range
+   C. Return without changing the coordinates, so size() remains 5
+   D. Terminate the entire program with return code 1
+
+
+5. What happens when Process::dispatch() executes state_->dispatch(this)?
+
+   A. It always creates a new Running object on the heap.
+   B. It delegates the request to the process's current State object.
+   C. It moves the process from blockedQueue to readyQueue automatically.
+   D. It changes every process to the running state.
+
+
+6. Which transition does Running::block() perform?
+
+   A. Blocked to running
+   B. Ready to blocked
+   C. Running to ready
+   D. Running to blocked
+
+
+7. What happens if block() is called on a newly constructed Process before dispatch()?
+
+   A. Nothing changes; Ready inherits State's no-op block() implementation.
+   B. The process becomes blocked immediately.
+   C. The process is deleted because the transition is invalid.
+   D. A new process ID is assigned.
+
+
+8. Why does Process use id_(nextId_++) with static int nextId_ initialized to 1?
+
+   A. To give every process ID 1
+   B. To reset the counter whenever a process changes state
+   C. To give successive constructions IDs 1, 2, 3, 4, and so on
+   D. To derive each ID from the number of elements in readyQueue
+
+
+9. Why do readyQueue and blockedQueue store Process* rather than copies of Process?
+
+   A. queue cannot store class objects in C++.
+   B. Pointers let the same process object retain its identity while changing queues.
+   C. Popping a pointer automatically deletes its process.
+   D. A pointer forces every process to share one State object.
+
+
+10. When does the scheduler's outer loop finish?
+
+    while(!readyQueue.empty() || !blockedQueue.empty())
+
+    A. As soon as readyQueue becomes empty
+    B. As soon as one process exits
+    C. When either queue contains four processes
+    D. Only when both queues are empty
+
+
+QUESTIONS 11-30: ADDITIONAL PRACTICE
+===================================
+
+11. What coordinates does SquareAdapter(3) initially give its LegacyRectangle?
+
+    A. Top-left (0, 0), bottom-right (3, 3)
+    B. Top-left (1, 1), bottom-right (3, 3)
+    C. Top-left (3, 3), bottom-right (0, 0)
+    D. Top-left (0, 0), bottom-right (2, 2)
+
+
+12. Ignoring prompts and labels, how many asterisks does SquareAdapter(3).draw() print?
+
+    A. 3, all on one row
+    B. 8, forming a hollow border
+    C. 9, in three rows of three
+    D. 16, because the bottom-right coordinates are inclusive
+
+
+13. What happens if the initial size input in movingSquare.cpp is -2?
+
+    A. An empty square is drawn and the second size is requested.
+    B. The program reports that the size must be a positive integer and returns 1.
+    C. The value is converted to positive 2.
+    D. The invalid input is ignored and the initial prompt repeats indefinitely.
+
+
+14. Why does size() return the new length after a successful resize() without
+    assigning to a separate size_ member?
+
+    A. resize() replaces the entire SquareAdapter object.
+    B. The compiler automatically caches the most recent argument.
+    C. LegacyRectangle::oldDraw() updates a global size variable.
+    D. size() computes the length from the coordinates that resize() changed.
+
+
+15. What happens to SquareAdapter's adaptee_ when the adapter is destroyed?
+
+    A. The contained LegacyRectangle object is destroyed automatically as a member.
+    B. It leaks unless SquareAdapter explicitly calls delete adaptee_.
+    C. It remains alive as a global object.
+    D. It is moved into a new SquareAdapter.
+
+
+16. Which statement about the Square interface in movingSquare.cpp is correct?
+
+    A. It can be instantiated directly because its destructor has a body.
+    B. resize() and size() are optional nonvirtual helper functions.
+    C. It is abstract; SquareAdapter implements its draw(), size(), and resize() operations.
+    D. It privately inherits from LegacyRectangle.
+
+
+17. Which state does a newly constructed Process initially point to?
+
+    A. Its blocked_ member
+    B. Its ready_ member
+    C. Its running_ member
+    D. A dynamically allocated Exited state
+
+
+18. How are the Ready, Running, and Blocked objects stored in this implementation?
+
+    A. A single shared set of static state objects belongs to all processes.
+    B. Every transition allocates all three state objects again.
+    C. They are temporary objects inside main's loop.
+    D. Each Process contains its own three state objects as data members.
+
+
+19. A new Process receives these calls in order:
+
+    dispatch(); block(); dispatch(); unblock(); suspend();
+
+    What is its final state?
+
+    A. Ready
+    B. Running
+    C. Blocked
+    D. Exited
+
+
+20. The ready queue contains process IDs [1, 2, 3, 4], front first. Process 1 is
+    dispatched and suspended. No blocked process is unblocked. What is the ready queue?
+
+    A. [1, 2, 3, 4]
+    B. [2, 3, 4]
+    C. [2, 3, 4, 1]
+    D. [4, 3, 2, 1]
+
+
+21. The ready queue is [1, 2, 3] and the blocked queue is [4], front first.
+    Process 1 is dispatched and blocked, and this iteration does not unblock
+    anyone. What are the queues afterward?
+
+    A. Ready [2, 3, 1]; blocked [4]
+    B. Ready [2, 3]; blocked [4, 1]
+    C. Ready [2, 3]; blocked [1, 4]
+    D. Ready [1, 2, 3, 4]; blocked []
+
+
+22. The ready queue is [2, 3] and the blocked queue is [1, 4], front first.
+    The unblocking step succeeds. What happens?
+
+    A. Both blocked processes become ready at once.
+    B. Process 4 becomes ready and is inserted before process 2.
+    C. Process 1 becomes running immediately without entering readyQueue.
+    D. Process 1 becomes ready and is appended, giving ready [2, 3, 1] and blocked [4].
+
+
+23. A running process is blocked when blockedQueue was previously empty.
+    Can that same process become ready again during the same outer-loop iteration?
+
+    A. Yes; the later unblocking check can select the newly blocked front process.
+    B. No; every blocked process must wait at least one complete extra iteration.
+    C. Only if a new process is constructed with the same ID
+    D. No; the program has no blocked-to-ready transition.
+
+
+24. What happens if all remaining processes are blocked and readyQueue is empty?
+
+    A. The outer loop terminates immediately.
+    B. A process is dispatched directly from blockedQueue.
+    C. The empty-ready message is printed and the blocked-front unblocking check still runs.
+    D. All blocked processes are deleted immediately.
+
+
+25. Which statement about the scheduler's number of iterations is correct?
+
+    A. There are exactly four iterations, one per process.
+    B. It is not fixed; repeated suspensions, blocks, and unsuccessful unblocking
+       attempts can prolong the run.
+    C. There are always exactly eight iterations.
+    D. Every process must block exactly once before it can exit.
+
+
+26. When blockedQueue is empty, what happens to std::rand() in this condition?
+
+    if(!blockedQueue.empty() && std::rand() % 2 == 0)
+
+    A. It runs twice to confirm the queue is empty.
+    B. It necessarily returns 0.
+    C. It runs and removes a process from readyQueue.
+    D. It is not evaluated because && short-circuits after the false left operand.
+
+
+27. How is process exit represented in stateScheduler.cpp?
+
+    A. The scheduler removes the front pointer from readyQueue, reports exit,
+       and deletes the process; there is no Exited State subclass.
+    B. Running::suspend() changes the process into an Exited object.
+    C. The process remains in readyQueue with a null state_ pointer.
+    D. Calling queue::pop() automatically runs the Process destructor.
+
+
+28. Three Process objects are constructed, then the third is deleted. If another
+    Process is constructed afterward, what ID does it receive?
+
+    A. 1, because deletion resets nextId_
+    B. 3, because IDs are reused as soon as an object is deleted
+    C. 4, because the construction counter is not decremented by deletion
+    D. 0, because there are fewer than four live processes
+
+
+29. Does Process::block() itself remove a pointer from readyQueue and push it
+    into blockedQueue?
+
+    A. Yes; the state_ pointer contains both queues.
+    B. No; state methods change the process's state, while main() manages queue membership.
+    C. Yes; all State methods automatically reorder both queues.
+    D. No; a blocked process never changes queue membership in this program.
+
+
+30. For a ready process with ID 3, which line does Process::report() print?
+
+    A. PID 3 state: READY
+    B. process 3: created
+    C. process 3 is running
+    D. process 3 is ready
+
+
+ANSWER KEY AND EXPLANATIONS
+===========================
+
+1.  B - SquareAdapter publicly implements Square and contains a LegacyRectangle
+        member. The finished program uses composition rather than the reference
+        class adapter's private inheritance from LegacyRectangle.
+2.  D - size() reads the rectangle getters and subtracts the left x-coordinate
+        from the right x-coordinate. It does not calculate area or cache a size.
+3.  A - resize() preserves x and y, then calls move(x, y, x + newSize, y + newSize).
+        The hypothetical coordinates therefore become (2, 3) and (6, 7).
+4.  C - The method checks newSize <= 0 and returns before move(). This differs
+        from main's invalid-input handling, which prints an error and exits.
+5.  B - Virtual dispatch selects behavior from the current state. Passing this
+        supplies the Process context that the state can modify.
+6.  D - Running::block() sets state_ to the address returned by blockedState().
+7.  A - Ready overrides dispatch() only. Its inherited block() has an empty body.
+8.  C - nextId_ is shared across instances. Post-increment uses the current value
+        for this object's ID and then advances the counter for later constructions.
+9.  B - The scheduler moves pointers, preserving each Process and its state members.
+        pop() removes a pointer entry; explicit delete is still needed on exit.
+10. D - The || condition continues when either queue has work. It becomes false
+        only when both empty() checks are true.
+11. A - The initializer is adaptee_(0, 0, size, size). These bounds produce a side
+        length of 3 because the drawing loops exclude the bottom-right bounds.
+12. C - draw() delegates to oldDraw(). Starting at (0, 0), three rows and three
+        columns print nine stars; the square is filled, not hollow.
+13. B - main rejects failed extraction or nonpositive input before constructing
+        the adapter. It prints the positive-integer message and returns 1.
+14. D - The coordinates are the source of truth for size(). After move() changes
+        the bottom-right x-coordinate, the getter subtraction reflects the change.
+15. A - adaptee_ is a value member, not a pointer allocated with new. Normal member
+        destruction releases it without a custom delete operation.
+16. C - All three operations are pure virtual in Square. The concrete adapter
+        provides the implementations, allowing use through the target interface.
+17. B - Process initializes state_ with &ready_ after constructing its state members.
+18. D - ready_, running_, and blocked_ are Process members. The state_ pointer
+        selects among them; transitions do not allocate or delete State objects.
+19. A - Ready -> Running -> Blocked; dispatch while blocked does nothing; unblock
+        returns to Ready; suspend while ready also does nothing.
+20. C - The scheduler pops process 1, changes it back to ready, and pushes its
+        pointer at the back. The other ready processes keep their relative order.
+21. B - Process 1 is removed from readyQueue and appended to blockedQueue. The
+        older blocked process 4 stays at the front.
+22. D - Only the blocked front is popped. Its state changes to ready and its
+        pointer joins the back of readyQueue.
+23. A - The unblocking step follows the dispatch/action step in the same iteration.
+        With no earlier blocked process, the newly blocked one is already the front.
+24. C - The unblocking check is outside the if/else for readyQueue. This permits
+        progress even when every surviving process is blocked.
+25. B - Random choices control repeated transitions and waiting iterations. The
+        code sets no fixed iteration limit or predetermined schedule.
+26. D - A false left operand of && prevents evaluation of its right operand. No
+        random number is consumed by this expression when blockedQueue is empty.
+27. A - After dispatch, action == 0 reports exit and deletes the Process pointer
+        already popped from readyQueue. Only Ready, Running, and Blocked exist.
+28. C - nextId_ counts constructions. Deleting an object does not rewind it.
+29. B - Process/State code maintains the state pointer. main separately pops and
+        pushes queue entries so container membership agrees with those transitions.
+30. D - report() writes "process ", the ID, and " is "; Ready::report() adds
+        lowercase "ready". The older reference transcript uses different wording.
+
+
+INFERRED QUIZ-GENERATION PROMPT
+===============================
+
+"Write a 10-question CS3 code-review quiz about the student's moving-square
+adapter and State scheduler. Use four answer choices and one best answer per
+question. Test the submitted implementation: composition and delegation,
+coordinate-based size and resize, validation, state transitions, process identity,
+queue order, object lifetime, and scheduler termination. Include short traces
+and plausible misconceptions. Use supplied examples as context and provide a
+separate answer key."
+
+This reconstructs the apparent style; the instructor's exact prompt and future
+questions are not available.

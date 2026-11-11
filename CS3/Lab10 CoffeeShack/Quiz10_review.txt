@@ -1,0 +1,377 @@
+CS3 CODE REVIEW - PREDICTED QUIZ 10
+Coffee Shack: Decorator, Chain of Responsibility, and Observer
+30 questions, answer key, and explanations
+
+Scope and prediction basis
+--------------------------
+These questions follow the photographed Quiz 1-3 examples: four choices, one
+best answer, concrete execution traces, statement purpose, and edge cases.
+They use coffeeShack.cpp, drink.hpp, drink.cpp, and the supplied input/output.
+The emphasis is your implementation of the three patterns and how they interact.
+
+Questions 1-10 are the strongest predictions; 11-30 cover additional plausible
+details. The ranking is qualitative, not a measured probability. Use the current
+code as the authority. Random service order is not fixed. Honey adds $3, so a
+large coffee with one honey costs $13 in this implementation.
+
+Choose the single best answer. Assume allocations succeed.
+
+
+QUESTIONS 1-10: HIGHEST-PRIORITY PREDICTIONS
+==========================================
+
+1. What does this statement do in the ingredient-selection loop?
+
+   drink = new Sugar(drink);
+
+   A. Replace the entire drink with a plain small coffee
+   B. Change every existing ingredient into sugar
+   C. Wrap the existing drink in a Sugar decorator and point drink to the new wrapper
+   D. Delete the old drink before storing its address in Sugar
+
+
+2. A medium coffee receives sugar, cream, and another sugar in that order. What
+   description and price does the finished drink provide?
+
+   A. medium coffee with sugar, cream, sugar; $11
+   B. medium coffee with sugar, cream; $10
+   C. medium coffee with sugar, cream, sugar; $10
+   D. medium coffee with cream, sugar, sugar; $11
+
+
+3. What is the order of handlers in the configured preparation chain?
+
+   A. Manager -> SeniorBarista -> JuniorBarista
+   B. SeniorBarista -> JuniorBarista -> Manager
+   C. JuniorBarista -> Manager -> SeniorBarista
+   D. JuniorBarista -> SeniorBarista -> Manager
+
+
+4. Which handler prepares a plain large coffee, and what price is announced?
+
+   A. SeniorBarista; $10
+   B. JuniorBarista; $10
+   C. Manager; $13
+   D. JuniorBarista; $5
+
+
+5. Which handler prepares a large coffee with one honey, and what is its price?
+
+   A. SeniorBarista; $11
+   B. JuniorBarista; $13
+   C. Manager; $13
+   D. Manager; $10
+
+
+6. What does notifyCustomers(ready) do when several customers are waiting?
+
+   A. Call update(ready) on every registered waiting customer; only the matching
+      customer prints a pickup response
+   B. Call update() on the first registered customer only
+   C. Delete all customers except ready
+   D. Give the same drink to every registered customer
+
+
+7. Why does Customer::update() compare ready == this rather than comparing names?
+
+   A. Pointer comparison always sorts customers alphabetically.
+   B. Names are not stored in Customer objects.
+   C. Every customer must have a unique name for the code to compile.
+   D. Different customers may have the same name, but their object addresses distinguish them.
+
+
+8. What happens when a Customer owning a multiply decorated drink is deleted?
+
+   A. Only the outermost wrapper is deleted; all inner drinks necessarily leak.
+   B. Its drink is deleted through a virtual destructor, and each Ingredient
+      destructor recursively deletes the drink it wraps.
+   C. Every other customer's drink is deleted too.
+   D. Only the undecorated base Drink is deleted; wrappers remain alive.
+
+
+9. How can Coffee Shack serve customers in a different order from registration?
+
+   A. registerCustomer() inserts customers in alphabetical order.
+   B. It uses a second thread for each customer.
+   C. serveCustomer() randomly selects an index in the waiting-customer vector.
+   D. The first customer is always moved to the end before notification.
+
+
+10. If input ends before three complete orders are accepted, what happens to the
+    orders that were already registered and are still waiting?
+
+    A. The final while loop serves them before the program deletes the customers.
+    B. They are discarded without preparation or notification.
+    C. The program must accept three more orders before serving anyone.
+    D. They remain permanently allocated because main() returns immediately.
+
+
+QUESTIONS 11-30: ADDITIONAL PRACTICE
+===================================
+
+11. What name and price does a directly default-constructed Drink provide?
+
+    Drink drink;
+
+    A. medium coffee; $7
+    B. small coffee; $5
+    C. large coffee; $10
+    D. small coffee; $0
+
+
+12. Which description results from adding cream, then sugar, then honey to a
+    small coffee?
+
+    A. small coffee with honey, sugar, cream
+    B. small coffee with cream, sugar, honey
+    C. small coffee with cream with sugar with honey
+    D. small coffee, cream, sugar, honey
+
+
+13. A small coffee receives one sugar and one cream. Does reversing their entry
+    order change the final price or description?
+
+    A. It changes the price to $9 but keeps the description unchanged.
+    B. It changes both price and ingredient multiplicity.
+    C. The price remains $8, but the listed ingredient order changes.
+    D. Both the price and the description are identical.
+
+
+14. A large coffee receives honey twice. What happens?
+
+    A. Both decorators remain, the description lists honey twice, and the price is $16.
+    B. The second honey is ignored, so the price is $13.
+    C. The second honey replaces the first, so the price is $3.
+    D. Duplicate ingredients are rejected with an error.
+
+
+15. How does JuniorBarista::prepare() decide whether to handle a drink itself?
+
+    A. It checks whether the price is less than $10.
+    B. It handles only small coffees.
+    C. It checks whether the waiting customer was registered first.
+    D. It checks whether the description lacks " with ", indicating no ingredients.
+
+
+16. A drink has cream, sugar, and honey. What does SeniorBarista::prepare() do
+    when the request reaches it?
+
+    A. Remove the honey and prepare the rest itself
+    B. Find "honey" in the description and forward the request to Manager
+    C. Return "SeniorBarista" because cream was entered first
+    D. Ask every Customer observer to choose a barista
+
+
+17. What happens if a user enters uppercase L at the size prompt, then lowercase s?
+
+    A. L is converted to l and a large coffee is immediately created.
+    B. The program exits on L without accepting s.
+    C. L is rejected; the prompt repeats, and s selects a small coffee.
+    D. L selects a large coffee and s becomes the customer's name.
+
+
+18. Why is the name read using getline(cin >> std::ws, name)?
+
+    A. std::ws removes leading whitespace left by earlier input, and getline
+       can read a name containing internal spaces.
+    B. It guarantees that every customer has a different name.
+    C. It converts the name into uppercase.
+    D. It reads only one character, just like the ingredient prompt.
+
+
+19. takeOrder() has created a drink and several decorators, but input ends while
+    it is asking for another ingredient. What happens to this incomplete order?
+
+    A. It is registered under an empty customer name.
+    B. It becomes a plain small coffee and is served immediately.
+    C. The decorators remain registered as Customer observers.
+    D. The drink chain is deleted, takeOrder() returns nullptr, and no customer
+       is registered for that partial order.
+
+
+20. Why does main() retain accepted Customer* pointers in its customers vector
+    after registering those customers with junior?
+
+    A. That vector is the JuniorBarista's ingredient list.
+    B. It retains the customer objects for final deletion, including customers
+       that have already been served and unregistered.
+    C. It forces service to follow FIFO order.
+    D. It creates a copy of every customer for each barista.
+
+
+21. What does unregisterCustomer(ready) do?
+
+    A. Delete the Customer and recursively delete its drink immediately
+    B. Remove every customer sharing ready's name
+    C. Erase the matching pointer from the waiting-customer vector without
+       deleting the Customer object
+    D. Move the customer into Manager's observer list
+
+
+22. Why does serveCustomer() notify customers before unregistering ready?
+
+    A. The ready customer is still registered and can receive its own ready notification.
+    B. Unregistering would change the drink's ingredients.
+    C. notifyCustomers() constructs the Customer object for the first time.
+    D. Every notification automatically unregisters all observers.
+
+
+23. Why does serveCustomer() first return when customers_.empty() is true?
+
+    A. An empty list indicates that all drinks require Manager.
+    B. It must construct the three baristas before accepting customers.
+    C. It must flush cin before every random selection.
+    D. It avoids selecting or indexing a nonexistent customer, including a
+       rand() % 0 operation.
+
+
+24. Who owns the baristas linked by next_ in this main()?
+
+    A. Each barista owns and deletes next_ in its destructor.
+    B. They are local automatic objects; next_ is a non-owning link and must
+       not be deleted by the preceding handler.
+    C. Every customer owns a separate dynamically allocated chain.
+    D. The Ingredient destructor deletes all three baristas.
+
+
+25. What does numCustomers = 3 limit in this program?
+
+    A. The total number of ingredient decorators
+    B. The number of notifications allowed per drink
+    C. The order-taking loop's maximum of three accepted customer orders,
+       after which any remaining waiting orders are served
+    D. The total number of cups a Manager may prepare across all runs
+
+
+26. How does this program allow multiple waiting orders without threads?
+
+    A. It registers accepted customers and sometimes takes another order before
+       serving one; it drains remaining orders at the end.
+    B. Every observer callback runs on a separate background thread.
+    C. std::vector automatically prepares all drinks in parallel.
+    D. It forks one operating-system process per decorator.
+
+
+27. When a honey drink is passed along the preparation chain, where does its
+    customer's observer registration remain?
+
+    A. It is moved from junior to senior, then from senior to manager.
+    B. It is erased as soon as JuniorBarista declines the drink.
+    C. The customer is registered separately with every handler by takeOrder().
+    D. It remains with junior; forwarding prepare() delegates preparation
+       without transferring observer registration.
+
+
+28. Ingredient's constructor invokes the default Drink constructor, whose price
+    is 0. Why does a Sugar wrapper around a $5 small coffee still report $6?
+
+    A. The compiler copies the wrapped price into every private base-class member.
+    B. Sugar overrides getPrice() and returns the wrapped drink's virtual price plus 1.
+    C. Creating a Sugar automatically changes Drink's default price to 5 globally.
+    D. Customer::update() adds the missing base price.
+
+
+29. Why does entering s at different prompts have different meanings?
+
+    A. std::cin randomly decides whether s means size or sugar.
+    B. The first s is stored as the customer's initial; later ones are ignored.
+    C. Separate switch statements interpret s as small at the size prompt and
+       as sugar at the ingredient prompt.
+    D. s always means sugar, even before a base drink exists.
+
+
+30. Using input.txt, Alex orders plain small coffee, Brenda orders medium with
+    sugar, cream, sugar, and Chris orders large with honey, honey. What is their
+    combined price, regardless of service order?
+
+    A. $32
+    B. $29
+    C. $30
+    D. $35
+
+
+ANSWER KEY AND EXPLANATIONS
+===========================
+
+1.  C - The old pointer is passed to Sugar's Ingredient base and stored as drink_.
+        The caller's pointer now refers to the outermost wrapper. Earlier drinks
+        and decorators remain inside the chain and are not immediately deleted.
+2.  A - Medium costs 7; sugar adds 1, cream 2, and the second sugar another 1.
+        Descriptions recurse inward first, preserving entry order and repeats.
+3.  D - main constructs Manager manager, SeniorBarista senior(&manager), and
+        JuniorBarista junior(&senior). serveCustomer() begins prepare() at junior.
+4.  B - A plain drink's description has no " with " marker. Junior handles it
+        regardless of cup size; takeOrder() sets a large coffee's base price to 10.
+5.  C - Honey adds 3 to the large base price of 10. Junior delegates because
+        ingredients exist, and Senior delegates because the description has honey.
+6.  A - notifyCustomers() loops over the entire waiting list. Each update()
+        compares ready with this, so only the matching object prints a response.
+7.  D - Two people named Alex can be distinct Customer objects. Object identity
+        prevents both from claiming a drink merely because their names match.
+8.  B - Customer deletes its outer Drink*. Drink's virtual destructor reaches
+        Ingredient's destructor, which deletes the next wrapped Drink recursively.
+9.  C - The selected waiting pointer is customers_[rand() % customers_.size()].
+        Service is not restricted to the vector's front and does not use threads.
+10. A - nullptr breaks the order-taking loop, but execution continues into the
+        final while(junior.hasCustomers()) loop before final object cleanup.
+11. D - The constructor defaults to DrinkType::small and price 0. Prices 5, 7,
+        and 10 are explicitly supplied by takeOrder(), not inferred by Drink.
+12. B - Ingredient::getName() appends " with " for the first ingredient and
+        ", " thereafter. Each outer decorator appends its own ingredient last.
+13. C - Both orders add 1 + 2 to the small price 5. The description follows
+        wrapper construction order, so sugar/cream and cream/sugar are distinct.
+14. A - Every h creates another Honey wrapper. No deduplication occurs, so
+        10 + 3 + 3 = 16 and both honey additions appear in the description.
+15. D - The junior uses name.find(" with ") == string::npos to recognize an
+        undecorated drink. Size and price are not its routing criteria.
+16. B - Senior searches for the substring "honey" anywhere in the description.
+        Other ingredients or their order do not prevent forwarding to Manager.
+17. C - The size switch has only lowercase l, m, and s cases. An invalid token
+        leaves drink null, so the size-selection loop requests another choice.
+18. A - Earlier char extraction leaves whitespace, including newlines. std::ws
+        consumes leading whitespace; getline then reads the rest of the name's
+        line, allowing names such as Alex Smith rather than stopping at a space.
+19. D - The failed ingredient extraction deletes drink and returns nullptr.
+        Recursive decorator destruction frees the partial order. main registers
+        a customer only when takeOrder() returns a non-null Customer*.
+20. B - main's vector retains all accepted customers. The junior's separate
+        vector tracks only waiting observers. Final deletion occurs through
+        main's vector, even for customers already removed from the waiting list.
+21. C - The method erases a matching pointer entry and returns. It does not
+        delete the pointee; main remains responsible for Customer destruction.
+22. A - The ready customer needs to receive update(ready) before its pointer is
+        removed from the observer list. Other waiting customers receive it too.
+23. D - With no waiting customer there is nothing to serve. The early return
+        also prevents using zero as the modulus and indexing an empty vector.
+24. B - manager, senior, and junior are automatic variables in main, declared
+        in an order that keeps the linked handlers alive while serving. next_
+        does not own its target; Barista's destructor does not delete it.
+25. C - The for loop runs at most three order-taking iterations and stops early
+        if takeOrder() returns nullptr. Remaining accepted orders still finish.
+26. A - Waiting orders coexist as registered customers. The single-threaded
+        program interleaves taking orders and serving randomly selected customers.
+27. D - main registers customers only with junior. prepare() forwarding does
+        not call registerCustomer() on senior or manager; junior still announces,
+        notifies, and unregisters the ready order after preparation is selected.
+28. B - The virtual call reaches Sugar::getPrice(). It delegates to the stored
+        inner drink and adds 1, rather than reading the wrapper's inherited price_.
+29. C - The variable choice is interpreted in different stages of takeOrder().
+        Its character value has meaning according to the switch that handles it.
+30. A - Alex: 5. Brenda: 7 + 1 + 2 + 1 = 11. Chris: 10 + 3 + 3 = 16.
+        The total is 5 + 11 + 16 = 32; random scheduling changes service order,
+        not the ingredients or charges of accepted orders.
+
+
+INFERRED QUIZ-GENERATION PROMPT
+===============================
+
+"Write a 10-question CS3 code-review quiz about the student's Coffee Shack
+implementation. Use four choices and one best answer per question. Test the
+Decorator composition, price and description traces, preparation-handler chain,
+observer registration and identity, ownership, input handling, and waiting-order
+behavior. Include repeated ingredients, equal customer names, and early input
+termination as concrete edge cases. Base answers on the actual submitted code
+and supply a separate answer key."
+
+This reconstructs the apparent style; the instructor's exact prompt and future
+questions are not available.
